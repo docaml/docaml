@@ -1,2 +1,2 @@
 all:
-	ocamlbuild -use-ocamlfind -use-menhir -cflags -rectypes -I src -package unix,str docaml.native
+	ocamlbuild -use-ocamlfind -use-menhir -I src -package unix,str docaml.native
