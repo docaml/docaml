@@ -7,7 +7,6 @@ open AST
 open ASTpp
 open Lexing
 
-
 exception Error of string
 
 let error fmt = Printf.ksprintf (fun s -> raise (Error s)) fmt
