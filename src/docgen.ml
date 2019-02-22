@@ -267,8 +267,16 @@ let parse_from_file f =
 
 let preprocess_file file =
   let modulename =
-    let dot = String.rindex file '.' in
-    let sls = String.rindex file '/' in
+    let dot =
+      match String.rindex_opt file '.' with
+      | Some dot -> dot
+      | None -> raise (Error "File should be <file.mli>")
+    in
+    let sls =
+      match String.rindex_opt file '/' with
+      | Some sls -> sls
+      | None -> -1
+    in
     String.sub file (sls+1) (dot-sls-1)
     |> String.capitalize_ascii
   in

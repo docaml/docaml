@@ -20,3 +20,5 @@ setup.data
 setup.log
 
 src/.merlin
+
+examples/ogaml-excerpt/html

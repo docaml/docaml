@@ -32,7 +32,7 @@ let gen_relative directory modules =
 
 let () =
   if Array.length Sys.argv < 1 then begin
-    print_endline "Usage : ./mkdoc <file1.mli> ... <fileN.mli>";
+    print_endline "Usage : docaml <file1.mli> ... <fileN.mli>";
     exit 2
   end;
   if not (Sys.file_exists "html") then
