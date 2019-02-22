@@ -5,4 +5,5 @@
 
 (executable
   (name docaml)
-  (modules_without_implementation aST aSTpp))
+  (modules_without_implementation aST aSTpp)
+  (libraries unix str))

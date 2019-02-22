@@ -627,7 +627,7 @@ let gen_index_main root modules example =
          <code class=\"OCaml\">%s</code>
        </pre>
      </figure>
-     </main>" (gen_index_modules root modules) s
+     </main>" (gen_index_modules root modules) (Bytes.to_string s)
 
 let aside_header root =
   Printf.sprintf
