@@ -53,13 +53,13 @@ let () =
   Printf.fprintf output "<!DOCTYPE html>\n<html>\n%s\n<body>%s\n%s</body>\n</html>"
     (Docgen.gen_header "../" "Index")
     (Docgen.gen_aside "../" None modules)
-    (Docgen.gen_index_main "../" modules "examples/tut02.ml");
+    (Docgen.gen_index_main "../" modules "tut02.ml");
   close_out output;
-  copy "src/doc/index.html" "html/index.html";
-  copy "src/doc/doc.css" "html/css/doc.css";
-  copy "src/doc/highlight.pack.js" "html/script/highlight.pack.js";
-  copy "src/doc/doc.js" "html/script/doc.js";
-  copy "src/doc/monokai.css" "html/css/monokai.css";
-  copy "src/doc/home.css" "html/css/home.css";
-  copy "src/doc/favicon-ogaml.ico" "html/img/favicon-ogaml.ico";
-  copy "src/doc/ogaml-logo.svg" "html/img/ogaml-logo.svg";
+  copy "index.html" "html/index.html";
+  copy "doc.css" "html/css/doc.css";
+  copy "highlight.pack.js" "html/script/highlight.pack.js";
+  copy "doc.js" "html/script/doc.js";
+  copy "monokai.css" "html/css/monokai.css";
+  copy "home.css" "html/css/home.css";
+  copy "favicon-ogaml.ico" "html/img/favicon-ogaml.ico";
+  copy "ogaml-logo.svg" "html/img/ogaml-logo.svg";
