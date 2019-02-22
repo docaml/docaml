@@ -60,6 +60,4 @@ let () =
   copy "highlight.pack.js" "html/script/highlight.pack.js";
   copy "doc.js" "html/script/doc.js";
   copy "monokai.css" "html/css/monokai.css";
-  copy "home.css" "html/css/home.css";
-  copy "favicon-ogaml.ico" "html/img/favicon-ogaml.ico";
-  copy "ogaml-logo.svg" "html/img/ogaml-logo.svg";
+  copy "home.css" "html/css/home.css"

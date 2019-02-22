@@ -553,7 +553,7 @@ let gen_header root modulename =
       @\n<script src=\"https://code.jquery.com/jquery-1.10.2.js\"></script>
       @\n<script src=\"%sscript/doc.js\"></script>
       @\n<script type=\"text/javascript\">%s</script>
-      @\n<link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"%simg/favicon-ogaml.ico\">
+      @\n<!--<link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"%simg/favicon-ogaml.ico\">-->
       @]@\n</head>"
     modulename root root root root highlight_init_code root;
   Format.flush_str_formatter ()
@@ -641,7 +641,8 @@ let aside_header root =
   Printf.sprintf
   "<header>
     <a href=\"%sindex.html\">
-      <img src=\"%simg/ogaml-logo.svg\" alt=\"OGAML\" width=\"100%%\">
+      <!--<img src=\"%simg/ogaml-logo.svg\" alt=\"OGAML\" width=\"100%%\">-->
+      docaml (insert name here)
     </a>
   </header>" root root
 
