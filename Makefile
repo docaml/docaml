@@ -1,5 +1,5 @@
 all:
-	ocamlbuild -use-ocamlfind -use-menhir -I src -package unix,str docaml.native
+	dune build @src/all --profile release
 
 clean:
-	rm -rf _build
+	dune clean

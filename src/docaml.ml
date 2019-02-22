@@ -1,6 +1,6 @@
-open Docgen
+(* open Docgen *)
 
-let copy src dest = 
+let copy src dest =
   let command = Printf.sprintf "cp %s %s" src dest in
   if not (Sys.file_exists dest) then
     Unix.system command |> ignore
@@ -13,7 +13,7 @@ let gen_relative directory modules =
   let open ASTpp in
   let rec gen_aux directory modl =
     let dir = Unix.getcwd () in
-    if not (Sys.file_exists directory) then 
+    if not (Sys.file_exists directory) then
       Unix.mkdir directory 0o777;
     Unix.chdir directory;
     let output = open_out (String.lowercase_ascii modl.modulename ^ ".html") in
@@ -30,20 +30,20 @@ let gen_relative directory modules =
   in
   List.iter (gen_aux directory) modules
 
-let () = 
+let () =
   if Array.length Sys.argv < 1 then begin
     print_endline "Usage : ./mkdoc <file1.mli> ... <fileN.mli>";
     exit 2
   end;
-  if not (Sys.file_exists "html") then 
+  if not (Sys.file_exists "html") then
     Unix.mkdir "html" 0o777;
-  if not (Sys.file_exists "html/css") then 
+  if not (Sys.file_exists "html/css") then
     Unix.mkdir "html/css" 0o777;
-  if not (Sys.file_exists "html/script") then 
+  if not (Sys.file_exists "html/script") then
     Unix.mkdir "html/script" 0o777;
-  if not (Sys.file_exists "html/img") then 
+  if not (Sys.file_exists "html/img") then
     Unix.mkdir "html/img" 0o777;
-  let modules = 
+  let modules =
     Array.to_list Sys.argv
     |> List.tl
     |> List.map (Docgen.preprocess_file)
