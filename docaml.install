@@ -1,0 +1,12 @@
+lib: [
+  "_build/install/default/lib/docaml/META" {"META"}
+  "_build/install/default/lib/docaml/dune-package" {"dune-package"}
+  "_build/install/default/lib/docaml/opam" {"opam"}
+]
+bin: [
+  "_build/install/default/bin/docaml" {"docaml"}
+]
+doc: [
+  "_build/install/default/doc/docaml/LICENSE"
+  "_build/install/default/doc/docaml/README.md"
+]

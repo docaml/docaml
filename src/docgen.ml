@@ -114,7 +114,7 @@ and process_comment s =
                | c -> c)
   |> List.filter (function
                   | PP_CommentString s -> not (Str.string_match (Str.regexp " *$") s 0)
-                  | c -> true)
+                  | _ -> true)
   |> List.partition (function
                      | PP_Related _ -> false
                      | _ -> true)
@@ -227,7 +227,7 @@ and process_functor {name; args; sign; constr} =
   }
 
 and pp hierarchy modulename ast : ASTpp.module_data =
-  let ast = List.filter (function Comment s -> false | _ -> true) ast in
+  let ast = List.filter (function Comment _ -> false | _ -> true) ast in
   let signatures,ast  = extract_sigs hierarchy modulename ast in
   let submodules,ast  = extract_submodules hierarchy modulename ast in
   let signatures = List.rev signatures in
