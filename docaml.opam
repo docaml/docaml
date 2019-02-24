@@ -1,0 +1,15 @@
+opam-version: "2.0"
+name: "docaml"
+version: "0.1"
+synopsis: "Documentation generation for ocaml"
+description: """
+This package provides automatic documentation generation from mli files.
+"""
+maintainer: ["Théo Winterhalter <theo.winterhalter@gmail.com>" "Victor Lanvin <victor.lanvin@ens-cachan.fr>"]
+authors: ["Victor Lanvin <victor.lanvin@ens-cachan.fr>" "Théo Winterhalter <theo.winterhalter@gmail.com>"]
+license: "MIT"
+homepage: ""
+bug-reports: "https://github.com/docaml/docaml/issues"
+dev-repo: "https://github.com/docaml/docaml"
+depends: [ "ocaml" "dune" ]
+build: ["dune" "build" "-p" docaml]
