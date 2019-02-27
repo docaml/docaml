@@ -55,9 +55,9 @@ let () =
     (Docgen.gen_aside "../" None modules)
     (Docgen.gen_index_main "../" modules "tut02.ml");
   close_out output;
-  copy "index.html" "html/index.html";
-  copy "doc.css" "html/css/doc.css";
-  copy "highlight.pack.js" "html/script/highlight.pack.js";
-  copy "doc.js" "html/script/doc.js";
-  copy "monokai.css" "html/css/monokai.css";
-  copy "home.css" "html/css/home.css"
+  copy "docaml-resources/index.html" "html/index.html";
+  copy "docaml-resources/doc.css" "html/css/doc.css";
+  copy "docaml-resources/highlight.pack.js" "html/script/highlight.pack.js";
+  copy "docaml-resources/doc.js" "html/script/doc.js";
+  copy "docaml-resources/monokai.css" "html/css/monokai.css";
+  copy "docaml-resources/home.css" "html/css/home.css"
