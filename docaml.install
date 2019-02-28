@@ -6,6 +6,14 @@ lib: [
 bin: [
   "_build/install/default/bin/docaml" {"docaml"}
 ]
+share_root: [
+  "_build/install/default/share/doc.css" {"doc.css"}
+  "_build/install/default/share/doc.js" {"doc.js"}
+  "_build/install/default/share/highlight.pack.js" {"highlight.pack.js"}
+  "_build/install/default/share/home.css" {"home.css"}
+  "_build/install/default/share/index.html" {"index.html"}
+  "_build/install/default/share/monokai.css" {"monokai.css"}
+]
 doc: [
   "_build/install/default/doc/docaml/LICENSE"
   "_build/install/default/doc/docaml/README.md"

@@ -8,3 +8,12 @@
   (public_name docaml)
   (modules_without_implementation aST aSTpp)
   (libraries unix str))
+
+(install
+  (section share_root)
+  (files (../resources/doc.css as doc.css)
+         (../resources/doc.js as doc.js)
+         (../resources/highlight.pack.js as highlight.pack.js)
+         (../resources/home.css as home.css)
+         (../resources/index.html as index.html)
+         (../resources/monokai.css as monokai.css)))
