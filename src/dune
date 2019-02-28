@@ -10,7 +10,7 @@
   (libraries unix str))
 
 (install
-  (section share_root)
+  (section share)
   (files (../resources/doc.css as doc.css)
          (../resources/doc.js as doc.js)
          (../resources/highlight.pack.js as highlight.pack.js)

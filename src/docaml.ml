@@ -55,9 +55,14 @@ let () =
     (Docgen.gen_aside "../" None modules)
     (Docgen.gen_index_main "../" modules "tut02.ml");
   close_out output;
-  copy "docaml-resources/index.html" "html/index.html";
-  copy "docaml-resources/doc.css" "html/css/doc.css";
-  copy "docaml-resources/highlight.pack.js" "html/script/highlight.pack.js";
-  copy "docaml-resources/doc.js" "html/script/doc.js";
-  copy "docaml-resources/monokai.css" "html/css/monokai.css";
-  copy "docaml-resources/home.css" "html/css/home.css"
+  (* Printf.printf "executable name: %s\n" Sys.executable_name ; *)
+  (* TODO This is not good, because it is OS dependent *)
+  let rdir s =
+    String.concat "" [ Filename.dirname Sys.executable_name ; "/../share/docaml/" ; s ]
+  in
+  copy (rdir "index.html") "html/index.html";
+  copy (rdir "doc.css") "html/css/doc.css";
+  copy (rdir "highlight.pack.js") "html/script/highlight.pack.js";
+  copy (rdir "doc.js") "html/script/doc.js";
+  copy (rdir "monokai.css") "html/css/monokai.css";
+  copy (rdir "home.css") "html/css/home.css"
