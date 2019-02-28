@@ -301,7 +301,7 @@ let rec comment_to_html root ppf comment =
       |> Str.split (Str.regexp "\\.")
       |> String.concat "/"
     in
-    Format.fprintf ppf "<br><span class=\"see\">See : <a href=\"%sdoc/%s.html\">%s</a></span>%a"
+    Format.fprintf ppf "<br><span class=\"see\">See : <a href=\"%s%s.html\">%s</a></span>%a"
       root link s (comment_to_html root) t
 
 and comment_to_string root comment =
@@ -575,7 +575,7 @@ let gen_main_pp ppf modl root =
     | []   -> ()
     | h::t ->
       let link = h.hierarchy @ [h.modulename] |> String.concat "/" |> String.lowercase_ascii in
-      Format.fprintf ppf "<tr><td><a href=\"%sdoc/%s.html\">%s</a></td><td>%a</td></tr>@\n%a"
+      Format.fprintf ppf "<tr><td><a href=\"%s%s.html\">%s</a></td><td>%a</td></tr>@\n%a"
         root link h.modulename (comment_to_html root) h.description print_submodules_aux t
   in
   let print_submodules ppf =
@@ -657,7 +657,7 @@ let rec gen_aside_module root curr mdl =
   Printf.sprintf
   "<li>
     <span class=\"arrow-right arrow shownav\"></span>
-    <a href=\"%sdoc/%s.html\">%s</a>
+    <a href=\"%s%s.html\">%s</a>
     <ul %s>
       %s
       %s
@@ -681,7 +681,7 @@ let gen_aside root curr modules =
   "<aside>
     %s
     <h1>
-      <a href=\"%sdoc/doc.html\">Modules</a>
+      <a href=\"%sdoc.html\">Modules</a>
       <span class=\"showall\">Show all</span>
     </h1>
     <ul id=\"main-nav\" style=\"display: block;\">
