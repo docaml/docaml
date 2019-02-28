@@ -53,7 +53,7 @@ let () =
   Printf.fprintf output "<!DOCTYPE html>\n<html>\n%s\n<body>%s\n%s</body>\n</html>"
     (Docgen.gen_header "" "Index")
     (Docgen.gen_aside "" None modules)
-    (Docgen.gen_index_main "" modules "tut02.ml");
+    (Docgen.gen_index_main "" modules);
   close_out output;
   (* Printf.printf "executable name: %s\n" Sys.executable_name ; *)
   (* TODO This is not good, because it is OS dependent *)
