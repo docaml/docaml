@@ -670,7 +670,7 @@ let gen_aside root curr modules =
   "<aside>
     %s
     <h1>
-      <a href=\"%sdoc.html\">Modules</a>
+      <a href=\"%sindex.html\">Modules</a>
       <span class=\"showall\">Show all</span>
     </h1>
     <ul id=\"main-nav\" style=\"display: block;\">
