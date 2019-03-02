@@ -1,4 +1,4 @@
-(* open Docgen *)
+open Html
 
 let copy src dest =
   let command = Printf.sprintf "cp %s %s" src dest in
