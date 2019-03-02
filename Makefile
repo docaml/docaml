@@ -12,4 +12,5 @@ doc:
 	docaml src/attribute.mli src/docgen.mli src/html.mli
 
 clean:
-	dune clean
+	dune clean && \
+	rm -rf doc
