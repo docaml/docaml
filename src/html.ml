@@ -28,11 +28,29 @@ let mk tag : tag =
 let mkvoid tag : void_tag =
   fun attributes -> { tag ; attributes ; children = None }
 
+let html = mk "html"
+
+let head = mk "head"
+let link = mkvoid "link"
+let meta = mkvoid "meta"
+let style = mk "style"
+let title = mk "title"
+
+let body = mk "body"
+
+let article = mk "article"
+let aside = mk "aside"
+let footer = mk "footer"
+let header = mk "header"
 let h1 = mk "h1"
 let h2 = mk "h2"
 let h3 = mk "h3"
 let h4 = mk "h4"
 let h5 = mk "h5"
 let h6 = mk "h6"
+let hgroup = mk "hgroup"
+let main = mk "main"
+let nav = mk "nav"
+let section = mk "section"
 
 let br = mkvoid "br"
