@@ -89,8 +89,35 @@ val section : tag
 
 (** Text content *)
 
+(** Generic container *)
+val div : tag
+
+(** Thematic break, usually a horizontal line *)
+val hr : void_tag
+
+(** Paragraph *)
+val p : tag
+
+(** Inline text *)
+
 (** Inline text *)
 val text : string -> t
 
+(** Anchor, hyperlink *)
+val a : tag
+
 (** Line break *)
 val br : void_tag
+
+(** Generic inline container *)
+val span : tag
+
+(** Image and multimedia *)
+
+(** Image element *)
+val img : void_tag
+
+(** Scripting *)
+
+(** Embed or reference executable code like javascript *)
+val script : tag

@@ -64,5 +64,15 @@ let main = mk "main"
 let nav = mk "nav"
 let section = mk "section"
 
+let div = mk "div"
+let hr = mkvoid "hr"
+let p = mk "p"
+
 let text s = Text s
+let a = mk "a"
 let br = mkvoid "br"
+let span = mk "span"
+
+let img = mkvoid "img"
+
+let script = mk "script"
