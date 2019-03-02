@@ -89,5 +89,8 @@ val section : tag
 
 (** Text content *)
 
+(** Inline text *)
+val text : string -> t
+
 (** Line break *)
 val br : void_tag

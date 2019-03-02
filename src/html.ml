@@ -1,32 +1,43 @@
 (* open Attribute *)
 
-type t = {
-  tag : string ;
+type _tag = {
+  name : string ;
   attributes : Attribute.t list ;
   children : t list option
 }
 
+and t =
+  | Text of string
+  | Tag of _tag
+
 let rec to_string h =
-  match h.children with
-  | Some l ->
-    Printf.sprintf "<%s%s>%s</%s>"
-      h.tag
-      (Attribute.list_to_string h.attributes)
-      (String.concat "" (List.map to_string l))
-      h.tag
-  | None ->
-    Printf.sprintf "<%s%s>"
-      h.tag
-      (Attribute.list_to_string h.attributes)
+  begin match h with
+  | Text s -> s
+  | Tag t ->
+    begin match t.children with
+    | Some l ->
+      Printf.sprintf "<%s%s>%s</%s>"
+        t.name
+        (Attribute.list_to_string t.attributes)
+        (String.concat "" (List.map to_string l))
+        t.name
+    | None ->
+      Printf.sprintf "<%s%s>"
+        t.name
+        (Attribute.list_to_string t.attributes)
+    end
+  end
 
 type tag = Attribute.t list -> t list -> t
 type void_tag = Attribute.t list -> t
 
-let mk tag : tag =
-  fun attributes children -> { tag ; attributes ; children = Some children }
+let mk name : tag =
+  fun attributes children ->
+    Tag { name ; attributes ; children = Some children }
 
-let mkvoid tag : void_tag =
-  fun attributes -> { tag ; attributes ; children = None }
+let mkvoid name : void_tag =
+  fun attributes ->
+    Tag { name ; attributes ; children = None }
 
 let html = mk "html"
 
@@ -53,4 +64,5 @@ let main = mk "main"
 let nav = mk "nav"
 let section = mk "section"
 
+let text s = Text s
 let br = mkvoid "br"
