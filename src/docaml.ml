@@ -56,8 +56,6 @@ let () =
     (Docgen.gen_aside "" None modules)
     (Docgen.gen_index_main "" modules);
   close_out output;
-  (* Printf.printf "executable name: %s\n" Sys.executable_name ; *)
-  (* TODO This is not good, because it is OS dependent *)
   let rdir s =
     String.concat "" [
       Filename.dirname Sys.executable_name ;

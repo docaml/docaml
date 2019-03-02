@@ -1,3 +1,4 @@
+(** Documentation generation *)
 
 (** [parse_from_file filename] *)
 val parse_from_file : string -> AST.module_field list
