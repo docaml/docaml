@@ -22,5 +22,6 @@ setup.log
 src/.merlin
 
 examples/ogaml-excerpt/doc
+doc
 
 *.install
