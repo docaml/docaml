@@ -1,4 +1,4 @@
-open Attribute
+(* open Attribute *)
 
 type t = {
   tag : string ;
@@ -29,3 +29,10 @@ let mkvoid tag : void_tag =
   fun attributes -> { tag ; attributes ; children = None }
 
 let h1 = mk "h1"
+let h2 = mk "h2"
+let h3 = mk "h3"
+let h4 = mk "h4"
+let h5 = mk "h5"
+let h6 = mk "h6"
+
+let br = mkvoid "br"

@@ -1,5 +1,3 @@
-open Html
-
 let copy src dest =
   let command = Printf.sprintf "cp %s %s" src dest in
   if not (Sys.file_exists dest) then
@@ -31,6 +29,9 @@ let gen_relative directory modules =
   List.iter (gen_aux directory) modules
 
 let () =
+  (* Simply to allow install *)
+  ignore (Html.h1 [] []) ;
+  (* END Useless *)
   if Array.length Sys.argv < 1 then begin
     print_endline "Usage : docaml <file1.mli> ... <fileN.mli>";
     exit 2
