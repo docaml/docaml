@@ -20,3 +20,15 @@ val id : string -> t
 
 (** URL of a linked source *)
 val href : string -> t
+
+(** Character encoding *)
+val charset : string -> t
+
+(** Relationship of the target object to the link object *)
+val rel : string -> t
+
+(** Type of element (correspond to attribute 'type') *)
+val typ : string -> t
+
+(** URL of embeddable content *)
+val src : string -> t

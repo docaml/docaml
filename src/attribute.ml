@@ -15,8 +15,8 @@ let mk name =
 let classes cl =
   mk "class" (String.concat " " cl)
 
-let id n =
-  mk "id" n
-
-let href s =
-  mk "href" s
+let id n = mk "id" n
+let href s = mk "href" s
+let charset s = mk "charset" s
+let rel s = mk "rel" s
+let typ s = mk "type" s

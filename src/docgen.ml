@@ -6,6 +6,8 @@
 open AST
 open ASTpp
 open Lexing
+open Html
+open Attribute
 
 exception Error of string
 
@@ -284,8 +286,6 @@ let preprocess_file file =
 
 
 let rec comment_to_html root comment =
-  let open Html in
-  let open Attribute in
   match comment with
   | [] -> []
   | PP_CommentString s :: t ->
@@ -309,17 +309,19 @@ let rec comment_to_html root comment =
     ] ::
     comment_to_html root t
 
-(* let rec mk_value root (s, expr, comment) =
-  let open Html in
-  let open Attribute in
+let ocaml content =
+  figure [ classes [ "highlight" ] ] [
+    code [ classes [ "OCaml" ] ] content
+  ]
+
+let rec mk_value root (s, expr, comment) =
+    let open Attribute in
   [
     td [ classes [ "variant" ] ] [
-      figure [ classes [ "highlight" ] ] [
-        code [ classes [ "OCaml" ] ] [
-          match expr with
-          | None -> text s
-          | Some e -> text (s ^ " of " ^ (type_expr_to_string e))
-        ]
+      ocaml [
+        match expr with
+        | None -> text s
+        | Some e -> text (s ^ " of " ^ (type_expr_to_string e))
       ]
     ] ;
     td [] (comment_to_html root comment)
@@ -328,12 +330,9 @@ let rec comment_to_html root comment =
 and mk_values root = function
   | [] -> []
   | h :: t ->
-    let open Html in
     tr [] (mk_value root h) :: mk_values root t
 
 and mk_value_table root vtable =
-  let open Html in
-  let open Attribute in
   if vtable <> [] then begin
     h4 [] [ text "Possible values" ] ::
     table [ classes [ "values" ] ] [
@@ -344,130 +343,63 @@ and mk_value_table root vtable =
   else []
 
 and mk_member root (mut, s, expr, comment) =
-  let open Html in
-  let open Attribute in
   td [ classes [ "record" ] ] [
-    figure [ ]
-  ] *)
+    ocaml [
+      text ((if mut then "mutable " else "") ^ s ^ (type_expr_to_string expr))
+    ]
+  ] ::
+  td [] (comment_to_html root comment) ::
+  []
 
-  (* Format.fprintf ppf
-  "<td class=\"record\">
-     <figure class=\"highlight\">
-        <code class=\"OCaml\">%s%s : %s</code>
-     </figure>
-  </td>
-  <td>%a</td>" (if mut then "mutable " else "")
-               s (type_expr_to_string expr) (comment_to_html root) comment *)
+and mk_members root = function
+  | [] -> []
+  | h :: t ->
+    tr [] (mk_member root h) :: mk_members root t
 
-let rec comment_to_html root ppf comment =
-  match comment with
-  | [] -> ()
-  | (PP_CommentString s)::t ->
-    Format.fprintf ppf "%s%a" s (comment_to_html root) t
-  | (PP_Inline s)::t ->
-    Format.fprintf ppf "<code class=\"OCaml\">%s</code>%a" s (comment_to_html root) t
-  | PP_EOL::PP_EOL::t ->
-    Format.fprintf ppf "<br>%a" (comment_to_html root) (PP_EOL::t)
-  | PP_EOL::t ->
-    Format.fprintf ppf "%a" (comment_to_html root) t
-  | (PP_Related s)::t ->
-    let link =
-      String.lowercase_ascii s
-      |> Str.split (Str.regexp "\\.")
-      |> String.concat "/"
-    in
-    Format.fprintf ppf "<br><span class=\"see\">See : <a href=\"%s%s.html\">%s</a></span>%a"
-      root link s (comment_to_html root) t
+and mk_member_table root (vtable : (bool * string * type_expr * comment) list) =
+  if vtable <> [] then begin
+    h4 [] [ text "Record fields" ] ::
+    table [ classes [ "fields" ] ] [
+      tbody [] (mk_members root vtable)
+    ] ::
+    []
+  end
+  else []
 
-and comment_to_string root comment =
-  let ppf = Format.str_formatter in
-  comment_to_html root ppf comment;
-  Format.flush_str_formatter ()
+(* TODO Understand the arguments
+   It is likely that a lot of it is due to Format
+ *)
+and mk_entry s f2 a2 f3 a3 =
+  article [] (
+    span [ classes [ "arrow-right" ; "arrow" ] ] [] ::
+    span [ classes [ "showmore" ] ] [
+      ocaml [ text s ] (* This time Victor put a <pre> around <code> as well. *)
+    ] ::
+    div [ classes [ "more" ] ] (f2 a2) ::
+    f3 a3
+  )
 
-and mk_value root ppf (s, expr, comment) =
-  Format.fprintf ppf
-  "<td class=\"variant\">
-     <figure class=\"highlight\">
-        <code class=\"OCaml\">%s%s%s</code>
-     </figure>
-  </td>
-  <td>%a</td>" s (match expr with None -> "" | Some _ -> " of ")
-                 (match expr with None -> "" | Some e -> type_expr_to_string e)
-                 (comment_to_html root) comment
-
-and mk_values root ppf = function
-  | [] -> ()
-  | h::t -> Format.fprintf ppf "<tr>@\n%a@\n</tr>@\n%a"
-              (mk_value root) h (mk_values root) t
-
-and mk_value_table root ppf vtable =
-  if vtable <> [] then
-    Format.fprintf ppf
-    "<h4>Possible values</h4>
-     @\n<table class=\"values\"></tbody>@\n@[<hov2>  %a@\n@]</tbody></table>"
-     (mk_values root) vtable
-
-and mk_member root ppf (mut, s, expr, comment) =
-  Format.fprintf ppf
-  "<td class=\"record\">
-     <figure class=\"highlight\">
-        <code class=\"OCaml\">%s%s : %s</code>
-     </figure>
-  </td>
-  <td>%a</td>" (if mut then "mutable " else "")
-               s (type_expr_to_string expr) (comment_to_html root) comment
-
-and mk_members root ppf = function
-  | [] -> ()
-  | h::t -> Format.fprintf ppf "<tr>@\n%a@\n</tr>@\n%a"
-              (mk_member root) h (mk_members root) t
-
-and mk_member_table root ppf (vtable : (bool * string * type_expr * comment) list) : unit =
-  if vtable <> [] then
-    Format.fprintf ppf
-    "<h4>Record fields</h4>
-     @\n<table class=\"fields\"></tbody>@\n@[<hov2>  %a@\n@]</tbody></table>"
-     (mk_members root) vtable
-
-
-and mk_entry : 'a 'b. Format.formatter -> string ->
-                     (Format.formatter -> 'a -> unit) -> 'a ->
-                     (Format.formatter -> 'b -> unit) -> 'b -> unit =
-  fun ppf s f2 a2 f3 a3 ->
-  Format.fprintf ppf
-  "<article>
-     <span class=\"arrow-right arrow\"></span>
-     <span class=\"showmore\">
-        <figure class=\"highlight\">
-          <pre><code class=\"OCaml\">%s</code></pre>
-        </figure>
-     </span>
-     <div class=\"more\">@\n@[<hov4>
-       %a
-     @]</div>
-   </article>
-   %a" s f2 a2 f3 a3
-
-and mk_type_comment root ppf (comment, typedata) : unit =
+and mk_type_comment root (comment, typedata) =
   let (c1, c2) =
     List.partition (function
                     | PP_Related _ -> false
                     | _ -> true) comment
   in
-  Format.fprintf ppf "%a@\n%a@\n%a@\n%a" (comment_to_html root) c1
-                                         (mk_value_table root) typedata.tenum
-                                         (mk_member_table root) typedata.tmembers
-                                         (comment_to_html root) c2
+  comment_to_html root c1 @
+  mk_value_table root typedata.tenum @
+  mk_member_table root typedata.tmembers @
+  comment_to_html root c2
 
-
-and module_to_html root ppf mdl =
+and module_to_html root mdl =
   match mdl with
-  | [] -> ()
-  | (PP_Title s)::t ->
-    Format.fprintf ppf "<br><h3>%s</h3>@\n%a" s (module_to_html root) t
-  | (PP_Comment c)::t ->
-    Format.fprintf ppf "<p>%a</p>@\n%a" (comment_to_html root) c (module_to_html root) t
-  | (PP_Type (typedata, comment))::t ->
+  | [] -> []
+  | PP_Title s :: t ->
+    br [] ::
+    h3 [] [ text s ] ::
+    module_to_html root t
+  | PP_Comment c :: t ->
+    p [] (comment_to_html root c) :: module_to_html root t
+  | PP_Type (typedata, comment) :: t ->
     let valtext =
       match (typedata.tparam, typedata.texpr) with
       | None, None     ->
@@ -481,12 +413,12 @@ and module_to_html root ppf mdl =
                                          typedata.tname
                                          (type_expr_to_string e)
     in
-    mk_entry ppf valtext (mk_type_comment root) (comment,typedata) (module_to_html root) t
-  | (PP_Val (s, expr, comment))::t ->
+    [ mk_entry valtext (mk_type_comment root) (comment,typedata) (module_to_html root) t ]
+  (* | PP_Val (s, expr, comment) :: t ->
     let valtext =
       Printf.sprintf "val %s : %s" s (type_expr_to_string expr)
     in
-    mk_entry ppf valtext (comment_to_html root) comment (module_to_html root) t
+    [ mk_entry valtext (comment_to_html root) comment (module_to_html root) t ]
   | (PP_Exn (s, Some expr, comment))::t ->
     let valtext =
       Printf.sprintf "exception %s of %s" s (type_expr_to_string expr)
@@ -523,7 +455,8 @@ and module_to_html root ppf mdl =
         (if List.length fdata.fcons <> 0 then " with type " else "")
         constraints
     in
-    mk_entry ppf valtext (comment_to_html root) comment (module_to_html root) t
+    mk_entry ppf valtext (comment_to_html root) comment (module_to_html root) t *)
+  | _ -> []
 
 and type_params_to_string = function
   | ParamTuple []  ->
@@ -618,20 +551,24 @@ let highlight_init_code =
    }"
 
 let gen_header root modulename =
-  Format.fprintf Format.str_formatter "<head>
-      @\n@[<hov2>  <title>OGaml documentation - %s</title>
-      @\n<meta charset=\"utf-8\">
-      @\n<link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
-      @\n<link rel=\"stylesheet\" href=\"%scss/monokai.css\">
-      @\n<link rel=\"stylesheet\" href=\"%scss/doc.css\">
-      @\n<script src=\"%sscript/highlight.pack.js\"></script>
-      @\n<script src=\"https://code.jquery.com/jquery-1.10.2.js\"></script>
-      @\n<script src=\"%sscript/doc.js\"></script>
-      @\n<script type=\"text/javascript\">%s</script>
-      @\n<!--<link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"%simg/favicon-ogaml.ico\">-->
-      @]@\n</head>"
-    modulename root root root root highlight_init_code root;
-  Format.flush_str_formatter ()
+  head [] [
+    title [] [
+      text ("{placeholder} docaml generated documentation — " ^ modulename)
+    ] ;
+    meta [ charset "utf-8" ] ;
+    link [
+      href "https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" ;
+      rel "stylesheet" ;
+      typ "text/css"
+    ] ;
+    link [ rel "stylesheet" ; href (root ^ "css/monokai.css") ] ;
+    link [ rel "stylesheet" ; href (root ^ "css/doc.css") ] ;
+    script [ src (root ^ "script/highlight.pack.js") ] [] ;
+    script [ src "https://code.jquery.com/jquery-1.10.2.js" ] [] ;
+    script [ src (root ^ "script/doc.js") ] [] ;
+    script [ typ "text/javascript" ] [ text highlight_init_code ]
+    (* link [ rel "shortcut icon" ; typ "image/x-icon" ; href (root ^ "img/favicon-ogaml.ico")] *)
+  ]
 
 let gen_main_pp ppf modl root =
   let hierarchy =
@@ -641,15 +578,26 @@ let gen_main_pp ppf modl root =
       |> Printf.sprintf "%s."
     end
   in
-  let print_headmodule ppf =
-    Format.fprintf ppf "<h1>Module <span class=\"prefix\">%s</span><span class=\"modulename\">%s</span></h1>
-    @\n<span class=\"abstract\">%a</span>@\n<hr>"
-      hierarchy modl.modulename (comment_to_html root) modl.description
+  let print_headmodule =
+    h1 [] [
+      text "Module" ;
+      span [ classes [ "prefix" ] ] [ text hierarchy ] ;
+      span [ classes [ "modulename" ] ] [ text modl.modulename ]
+    ] ::
+    span [ classes [ "abstract" ] ] (comment_to_html root modl.description) ::
+    []
   in
-  let rec print_submodules_aux ppf = function
-    | []   -> ()
-    | h::t ->
-      let link = h.hierarchy @ [h.modulename] |> String.concat "/" |> String.lowercase_ascii in
+  let rec print_submodules_aux = function
+    | [] -> []
+    | h :: t ->
+      let link =
+        h.hierarchy @ [h.modulename]
+        |> String.concat "/"
+        |> String.lowercase_ascii
+      in
+      (* tr [] [
+        td []
+      ] *)
       Format.fprintf ppf "<tr><td><a href=\"%s%s.html\">%s</a></td><td>%a</td></tr>@\n%a"
         root link h.modulename (comment_to_html root) h.description print_submodules_aux t
   in
