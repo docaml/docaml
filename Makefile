@@ -1,13 +1,13 @@
-.PHONY: doc
+.PHONY: doc docaml
 
-all:
+docaml:
 	dune build @src/all --profile release
 
-install:
+install: docaml
 	dune build @install && \
 	dune install
 
-doc:
+doc: docaml install
 	# docaml src/AST.mli src/ASTpp.mli src/attribute.mli src/docgen.mli src/html.mli
 	docaml src/attribute.mli src/docgen.mli src/html.mli
 
