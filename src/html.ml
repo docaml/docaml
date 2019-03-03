@@ -33,6 +33,9 @@ type void_tag = Attribute.t list -> t
 
 let text s = Text s
 
+let doctype =
+  Tag { name = "!DOCTYPE html" ; attributes = [] ; children = None }
+
 let mk name : tag =
   fun attributes children ->
     Tag { name ; attributes ; children = Some children }
@@ -69,7 +72,9 @@ let section = mk "section"
 let div = mk "div"
 let figure = mk "figure"
 let hr = mkvoid "hr"
+let li = mk "li"
 let p = mk "p"
+let ul = mk "ul"
 
 let a = mk "a"
 let br = mkvoid "br"

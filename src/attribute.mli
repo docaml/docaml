@@ -32,3 +32,6 @@ val typ : string -> t
 
 (** URL of embeddable content *)
 val src : string -> t
+
+(** Style of an element *)
+val style : string -> t

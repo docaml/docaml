@@ -20,3 +20,5 @@ let href s = mk "href" s
 let charset s = mk "charset" s
 let rel s = mk "rel" s
 let typ s = mk "type" s
+let src s = mk "src" s
+let style s = mk "style" s

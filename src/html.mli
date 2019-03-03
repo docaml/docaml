@@ -19,6 +19,9 @@ type void_tag = Attribute.t list -> t
 (** Text *)
 val text : string -> t
 
+(** Document type, to put at the beginning of a document *)
+val doctype : t
+
 (*** Main root *)
 
 (** Top-level element of an HTML document *)
@@ -101,8 +104,14 @@ val figure : tag
 (** Thematic break, usually a horizontal line *)
 val hr : void_tag
 
+(** Element in a list *)
+val li : tag
+
 (** Paragraph *)
 val p : tag
+
+(** Unordered list *)
+val ul : tag
 
 (*** Inline text *)
 
