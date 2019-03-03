@@ -25,19 +25,19 @@ module_field:
     {AST.Documentation s}
   |s = TITLECOMMENT
     {AST.Title s}
-  |TYPE; t = LIDENT 
+  |TYPE; t = LIDENT
     {AST.AbstractType (None, t)}
-  |TYPE; p = type_param; t = LIDENT 
+  |TYPE; p = type_param; t = LIDENT
     {AST.AbstractType (Some p,t)}
-  |TYPE; t = LIDENT; EQUALS; e = type_expr 
+  |TYPE; t = LIDENT; EQUALS; e = type_expr
     {AST.ConcreteType (None,t,e)}
-  |TYPE; p = type_param; t = LIDENT; EQUALS; e = type_expr 
+  |TYPE; p = type_param; t = LIDENT; EQUALS; e = type_expr
     {AST.ConcreteType (Some p,t,e)}
   |VAL; t = LIDENT; COLON; e = delim_value_type
     {AST.Value (t,e)}
   |VAL; op = OPERATOR; COLON; e = delim_value_type
     {AST.Value (op,e)}
-  |EXN; t = UIDENT 
+  |EXN; t = UIDENT
     {AST.Exn (t, None)}
   |EXN; t = UIDENT; OF; e = delim_value_type
     {AST.Exn (t, Some e)}
@@ -47,7 +47,7 @@ module_field:
     {AST.Signature (t, m)}
   |MODULE; t = UIDENT; COLON; m = module_type
     {AST.ImplicitModule (t, m)}
-  |MODULE; t = UIDENT; COLON; FUNCTOR; m = functor_params; 
+  |MODULE; t = UIDENT; COLON; FUNCTOR; m = functor_params;
    ARROW; u = UIDENT; topt = type_constraints
     {AST.(Functor {name = t; args = m; sign = u; constr = topt})}
   ;

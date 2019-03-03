@@ -3,6 +3,11 @@ let copy src dest =
   if not (Sys.file_exists dest) then
     Unix.system command |> ignore
 
+(* mkdir if does not exists *)
+let fmkdir dir =
+  if not (Sys.file_exists dir) then
+    Unix.mkdir dir 0o777
+
 let rec relative_root = function
   | 0 -> ""
   | n -> "../" ^ (relative_root (n-1))
@@ -36,14 +41,10 @@ let () =
     print_endline "Usage : docaml <file1.mli> ... <fileN.mli>";
     exit 2
   end;
-  if not (Sys.file_exists "doc") then
-    Unix.mkdir "doc" 0o777;
-  if not (Sys.file_exists "doc/css") then
-    Unix.mkdir "doc/css" 0o777;
-  if not (Sys.file_exists "doc/script") then
-    Unix.mkdir "doc/script" 0o777;
-  if not (Sys.file_exists "doc/img") then
-    Unix.mkdir "doc/img" 0o777;
+  fmkdir "doc" ;
+  fmkdir "doc/css" ;
+  fmkdir "doc/script" ;
+  fmkdir "doc/img" ;
   let modules =
     Array.to_list Sys.argv
     |> List.tl
@@ -56,6 +57,7 @@ let () =
     (Docgen.gen_aside "" None modules)
     (Docgen.gen_index_main "" modules);
   close_out output;
+  (* Resource directory *)
   let rdir s =
     String.concat "" [
       Filename.dirname Sys.executable_name ;

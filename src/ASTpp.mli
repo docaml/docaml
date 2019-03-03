@@ -1,13 +1,13 @@
 type comment_token = 
   | PP_CommentString of string
   | PP_Inline  of string
-  | PP_EOL     
+  | PP_EOL
   | PP_Related of string
 
-and comment = 
+and comment =
   comment_token list
 
-and type_data = 
+and type_data =
   {
     tparam : type_param option;
     tname : string;
@@ -25,7 +25,7 @@ and module_field =
   | PP_Functor of functor_data * comment
   | PP_ImplicitModule of string * type_expr * comment
 
-and functor_data = 
+and functor_data =
   {
     fname : string;
     fargs : (string * string) list;
@@ -37,8 +37,8 @@ and variance = AST.variance
 
 and type_param = AST.type_param
 
-and type_expr = 
-  | PP_NoType 
+and type_expr =
+  | PP_NoType
   | PP_ModType of string * type_expr
   | PP_AtomType of string
   | PP_Record of (bool * string * type_expr) list
@@ -50,9 +50,9 @@ and type_expr =
   | PP_OptionalParam of string * type_expr
   | PP_Variant of (string * type_expr option) list
   | PP_ParamType of (type_expr list * type_expr)
-  | PP_FCModule of type_expr * (type_expr * type_expr) list 
+  | PP_FCModule of type_expr * (type_expr * type_expr) list
 
-and module_data = 
+and module_data =
   {
     hierarchy : string list;
     modulename : string;
@@ -61,4 +61,3 @@ and module_data =
     signatures : module_data list;
     contents : module_field list
   }
-

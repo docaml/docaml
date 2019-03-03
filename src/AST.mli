@@ -1,12 +1,12 @@
 type mfunctor = 
-  { 
+  {
     name :  string;
     args : (string * string) list;
     sign :  string;
     constr : (type_expr * type_expr) list
   }
 
-and module_field = 
+and module_field =
   | Comment of string
   | Documentation of string
   | Title of string
@@ -19,16 +19,16 @@ and module_field =
   | Functor of mfunctor
   | Signature of string * (module_field list)
 
-and variance = 
-  | Lower 
+and variance =
+  | Lower
   | Greater
   | Equals
 
-and type_param = 
+and type_param =
   | ParamTuple of type_param list
   | Polymorphic of string
 
-and type_expr = 
+and type_expr =
   | NoType
   | ModuleType of string * type_expr
   | AtomType of string
@@ -41,5 +41,4 @@ and type_expr =
   | OptionalParam of string * type_expr
   | Variant of (string option * string * type_expr option) list
   | ParamType of (type_expr list * type_expr)
-  | FCModule of type_expr * (type_expr * type_expr) list 
-
+  | FCModule of type_expr * (type_expr * type_expr) list

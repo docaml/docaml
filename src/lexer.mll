@@ -6,19 +6,19 @@
   let h_add k e t = Hashtbl.add t k e; t
 
   let keywords_table =
-    Hashtbl.create 19 
-    |> h_add "module"   MODULE
-    |> h_add "val"      VAL
-    |> h_add "type"     TYPE
-    |> h_add "end"      END
-    |> h_add "sig"      SIG
-    |> h_add "exception"EXN
-    |> h_add "of"       OF
-    |> h_add "as"       AS
-    |> h_add "with"     WITH
-    |> h_add "functor"  FUNCTOR
-    |> h_add "and"      AND
-    |> h_add "mutable"  MUTABLE
+    Hashtbl.create 19
+    |> h_add "module"    MODULE
+    |> h_add "val"       VAL
+    |> h_add "type"      TYPE
+    |> h_add "end"       END
+    |> h_add "sig"       SIG
+    |> h_add "exception" EXN
+    |> h_add "of"        OF
+    |> h_add "as"        AS
+    |> h_add "with"      WITH
+    |> h_add "functor"   FUNCTOR
+    |> h_add "and"       AND
+    |> h_add "mutable"   MUTABLE
 
 }
 
@@ -77,20 +77,18 @@ rule token = parse
 
 and read_comment buf = parse
   | "*)"      { Buffer.contents buf }
-  | newline   { Lexing.new_line lexbuf; 
-                Buffer.add_char buf '\n'; 
+  | newline   { Lexing.new_line lexbuf;
+                Buffer.add_char buf '\n';
                 read_comment buf lexbuf }
-  | '*'  
-    { 
-      Buffer.add_char buf '*'; 
-      read_comment buf lexbuf 
+  | '*'
+    {
+      Buffer.add_char buf '*';
+      read_comment buf lexbuf
     }
   | [^ '*' '\r' '\n']+
-    { 
+    {
       Buffer.add_string buf (Lexing.lexeme lexbuf);
       read_comment buf lexbuf
     }
   | eof { raise (SyntaxError ("Comment not terminated")) }
   | _   { assert false }
-
-
