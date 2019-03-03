@@ -17,3 +17,6 @@ let classes cl =
 
 let id n =
   mk "id" n
+
+let href s =
+  mk "href" s

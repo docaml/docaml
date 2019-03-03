@@ -31,6 +31,8 @@ let rec to_string h =
 type tag = Attribute.t list -> t list -> t
 type void_tag = Attribute.t list -> t
 
+let text s = Text s
+
 let mk name : tag =
   fun attributes children ->
     Tag { name ; attributes ; children = Some children }
@@ -65,14 +67,20 @@ let nav = mk "nav"
 let section = mk "section"
 
 let div = mk "div"
+let figure = mk "figure"
 let hr = mkvoid "hr"
 let p = mk "p"
 
-let text s = Text s
 let a = mk "a"
 let br = mkvoid "br"
+let code = mk "code"
 let span = mk "span"
 
 let img = mkvoid "img"
 
 let script = mk "script"
+
+let table = mk "table"
+let tbody = mk "tbody"
+let td = mk "td"
+let tr = mk "tr"

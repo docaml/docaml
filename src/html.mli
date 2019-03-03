@@ -16,6 +16,9 @@ type tag = Attribute.t list -> t list -> t
 (** Type of a void element, a void element doesn't have children *)
 type void_tag = Attribute.t list -> t
 
+(** Text *)
+val text : string -> t
+
 (*** Main root *)
 
 (** Top-level element of an HTML document *)
@@ -92,6 +95,9 @@ val section : tag
 (** Generic container *)
 val div : tag
 
+(** Figure element *)
+val figure : tag
+
 (** Thematic break, usually a horizontal line *)
 val hr : void_tag
 
@@ -100,14 +106,14 @@ val p : tag
 
 (*** Inline text *)
 
-(** Inline text *)
-val text : string -> t
-
 (** Anchor, hyperlink *)
 val a : tag
 
 (** Line break *)
 val br : void_tag
+
+(** Computer code *)
+val code : tag
 
 (** Generic inline container *)
 val span : tag
@@ -121,3 +127,17 @@ val img : void_tag
 
 (** Embed or reference executable code like javascript *)
 val script : tag
+
+(*** Table content *)
+
+(** Tabular data *)
+val table : tag
+
+(** Encompass a set of rows comprising the body of the table *)
+val tbody : tag
+
+(** Cell of a table *)
+val td : tag
+
+(** Row of cells of a table *)
+val tr : tag

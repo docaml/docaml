@@ -283,6 +283,82 @@ let preprocess_file file =
   preprocess modulename ast
 
 
+let rec comment_to_html root comment =
+  let open Html in
+  let open Attribute in
+  match comment with
+  | [] -> []
+  | PP_CommentString s :: t ->
+    text s :: comment_to_html root t
+  | PP_Inline s :: t ->
+    code [ classes [ "OCaml" ] ] [ text s ] :: comment_to_html root t
+  | PP_EOL :: PP_EOL :: t ->
+    br [] :: comment_to_html root (PP_EOL :: t)
+  | PP_EOL :: t ->
+    comment_to_html root t
+  | PP_Related s :: t ->
+    let link =
+      String.lowercase_ascii s
+      |> Str.split (Str.regexp "\\.")
+      |> String.concat "/"
+    in
+    br [] ::
+    span [ classes [ "see" ] ] [
+      text "See: " ;
+      a [ href (root ^ link ^ ".html") ] [ text s ]
+    ] ::
+    comment_to_html root t
+
+(* let rec mk_value root (s, expr, comment) =
+  let open Html in
+  let open Attribute in
+  [
+    td [ classes [ "variant" ] ] [
+      figure [ classes [ "highlight" ] ] [
+        code [ classes [ "OCaml" ] ] [
+          match expr with
+          | None -> text s
+          | Some e -> text (s ^ " of " ^ (type_expr_to_string e))
+        ]
+      ]
+    ] ;
+    td [] (comment_to_html root comment)
+  ]
+
+and mk_values root = function
+  | [] -> []
+  | h :: t ->
+    let open Html in
+    tr [] (mk_value root h) :: mk_values root t
+
+and mk_value_table root vtable =
+  let open Html in
+  let open Attribute in
+  if vtable <> [] then begin
+    h4 [] [ text "Possible values" ] ::
+    table [ classes [ "values" ] ] [
+      tbody [] (mk_values root vtable)
+    ] ::
+    []
+  end
+  else []
+
+and mk_member root (mut, s, expr, comment) =
+  let open Html in
+  let open Attribute in
+  td [ classes [ "record" ] ] [
+    figure [ ]
+  ] *)
+
+  (* Format.fprintf ppf
+  "<td class=\"record\">
+     <figure class=\"highlight\">
+        <code class=\"OCaml\">%s%s : %s</code>
+     </figure>
+  </td>
+  <td>%a</td>" (if mut then "mutable " else "")
+               s (type_expr_to_string expr) (comment_to_html root) comment *)
+
 let rec comment_to_html root ppf comment =
   match comment with
   | [] -> ()

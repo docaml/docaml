@@ -17,3 +17,6 @@ val classes : string list -> t
 
 (** Unique id of an element *)
 val id : string -> t
+
+(** URL of a linked source *)
+val href : string -> t
