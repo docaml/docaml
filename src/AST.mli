@@ -1,10 +1,9 @@
-type mfunctor = 
-  {
-    name :  string;
-    args : (string * string) list;
-    sign :  string;
-    constr : (type_expr * type_expr) list
-  }
+type mfunctor = {
+  name   :  string ;
+  args   : (string * string) list ;
+  sign   :  string ;
+  constr : (type_expr * type_expr) list
+}
 
 and module_field =
   | Comment of string

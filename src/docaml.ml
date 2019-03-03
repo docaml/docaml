@@ -16,9 +16,8 @@ let gen_relative directory modules =
   let open ASTpp in
   let rec gen_aux directory modl =
     let dir = Unix.getcwd () in
-    if not (Sys.file_exists directory) then
-      Unix.mkdir directory 0o777;
-    Unix.chdir directory;
+    fmkdir directory ;
+    Unix.chdir directory ;
     let output = open_out (String.lowercase_ascii modl.modulename ^ ".html") in
     Printf.fprintf output "<!DOCTYPE html>\n<html>\n%s\n<body>%s\n%s</body>\n</html>"
       (Docgen.gen_header (relative_root (List.length modl.hierarchy)) modl.modulename)

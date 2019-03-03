@@ -218,13 +218,12 @@ and get_enums = function
     ) l
   | _ -> []
 
-and process_functor {name; args; sign; constr} =
-  {
-    fname = name;
-    fargs = args;
-    fsign = sign;
-    fcons = List.map (fun (s,e) -> (process_expr s,process_expr e)) constr
-  }
+and process_functor {name; args; sign; constr} = {
+  fname = name ;
+  fargs = args ;
+  fsign = sign ;
+  fcons = List.map (fun (s,e) -> (process_expr s,process_expr e)) constr
+}
 
 and pp hierarchy modulename ast : ASTpp.module_data =
   let ast = List.filter (function Comment _ -> false | _ -> true) ast in
@@ -235,7 +234,7 @@ and pp hierarchy modulename ast : ASTpp.module_data =
   let description,ast = get_description ast in
   let description = process_comment description in
   let contents = process_module ast in
-  {hierarchy; modulename; description; submodules; signatures; contents}
+  { hierarchy; modulename; description; submodules; signatures; contents }
 
 let preprocess modulename ast = pp [] modulename ast
 
@@ -260,9 +259,9 @@ let parse_with_errors lexbuf =
 let parse_from_file f =
   let input = open_in f in
   let lexbuf = from_channel input in
-  lexbuf.lex_curr_p <- {lexbuf.lex_curr_p with pos_fname = f};
+  lexbuf.lex_curr_p <- { lexbuf.lex_curr_p with pos_fname = f } ;
   let ast = parse_with_errors lexbuf in
-  close_in input;
+  close_in input ;
   ast
 
 let preprocess_file file =
