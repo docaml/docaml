@@ -16,12 +16,12 @@ type tag = Attribute.t list -> t list -> t
 (** Type of a void element, a void element doesn't have children *)
 type void_tag = Attribute.t list -> t
 
-(** Main root *)
+(*** Main root *)
 
 (** Top-level element of an HTML document *)
 val html : tag
 
-(** Document meta-data *)
+(*** Document meta-data *)
 
 (** Contains meta-data *)
 val head : tag
@@ -38,12 +38,12 @@ val style : tag
 (** Title of the document *)
 val title : tag
 
-(** Sectioning root *)
+(*** Sectioning root *)
 
 (** Content of the document *)
 val body : tag
 
-(** Content sectioning *)
+(*** Content sectioning *)
 
 (** Self-contained composition *)
 val article : tag
@@ -87,7 +87,7 @@ val nav : tag
 (** Standalone section *)
 val section : tag
 
-(** Text content *)
+(*** Text content *)
 
 (** Generic container *)
 val div : tag
@@ -98,7 +98,7 @@ val hr : void_tag
 (** Paragraph *)
 val p : tag
 
-(** Inline text *)
+(*** Inline text *)
 
 (** Inline text *)
 val text : string -> t
@@ -112,12 +112,12 @@ val br : void_tag
 (** Generic inline container *)
 val span : tag
 
-(** Image and multimedia *)
+(*** Image and multimedia *)
 
 (** Image element *)
 val img : void_tag
 
-(** Scripting *)
+(*** Scripting *)
 
 (** Embed or reference executable code like javascript *)
 val script : tag
