@@ -309,9 +309,11 @@ let rec comment_to_html root comment =
     ] ::
     comment_to_html root t
 
-let ocaml content =
+let ocaml ?(usepre = false) content =
   figure [ classes [ "highlight" ] ] [
-    code [ classes [ "OCaml" ] ] content
+    if usepre
+    then pre [] [ code [ classes [ "OCaml" ] ] content ]
+    else code [ classes [ "OCaml" ] ] content
   ]
 
 let rec mk_value root (s, expr, comment) =
@@ -366,14 +368,11 @@ and mk_member_table root (vtable : (bool * string * type_expr * comment) list) =
   end
   else []
 
-(* TODO Understand the arguments
-   It is likely that a lot of it is due to Format
- *)
 and mk_entry s more rest =
   article [] (
     span [ classes [ "arrow-right" ; "arrow" ] ] [] ::
     span [ classes [ "showmore" ] ] [
-      ocaml [ text s ] (* This time Victor put a <pre> around <code> as well. *)
+      ocaml ~usepre:true [ text s ]
     ] ::
     div [ classes [ "more" ] ] more ::
     rest

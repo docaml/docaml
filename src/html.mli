@@ -112,6 +112,9 @@ val li : tag
 (** Paragraph *)
 val p : tag
 
+(** Preformatted text *)
+val pre : tag
+
 (** Unordered list *)
 val ul : tag
 

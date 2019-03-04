@@ -79,6 +79,7 @@ let figure = mk "figure"
 let hr = mkvoid "hr"
 let li = mk "li"
 let p = mk "p"
+let pre = mk "pre"
 let ul = mk "ul"
 
 let a = mk "a"
