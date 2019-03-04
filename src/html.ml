@@ -14,17 +14,22 @@ let rec to_string h =
   begin match h with
   | Text s -> s
   | Tag t ->
+    let attr =
+      match t.attributes with
+      | [] -> ""
+      | _ -> " " ^ Attribute.list_to_string t.attributes
+    in
     begin match t.children with
     | Some l ->
       Printf.sprintf "<%s%s>%s</%s>"
         t.name
-        (Attribute.list_to_string t.attributes)
+        attr
         (String.concat "" (List.map to_string l))
         t.name
     | None ->
       Printf.sprintf "<%s%s>"
         t.name
-        (Attribute.list_to_string t.attributes)
+        attr
     end
   end
 
