@@ -34,5 +34,6 @@ let style s = mk "style" s
 let name s = mk "name" s
 let pattern s = mk "pattern" s
 let title s = mk "title" s
+let action s = mk "action" s
 
 let required = Boolean "required"

@@ -79,6 +79,18 @@ let () =
         Docgen.gen_aside "" None modules ;
         main [] [
           h1 [] [ text "Search" ] ;
+          form [] [
+            div [ classes [ "tipue_search_group" ] ] [
+              input [
+                typ "text" ;
+                name "q" ;
+                id "tipue_search_input" ;
+                pattern ".{3,}" ;
+                title "At least 3 characters" ;
+                required
+              ]
+            ]
+          ] ;
           div [ id "tipue_search_content" ] []
         ] ;
         script [] [
