@@ -3,6 +3,11 @@ let copy src dest =
   if not (Sys.file_exists dest) then
     Unix.system command |> ignore
 
+let cpdir src dest =
+  let command = Printf.sprintf "cp -r %s %s" src dest in
+  if not (Sys.file_exists dest) then
+    Unix.system command |> ignore
+
 (* mkdir if does not exists *)
 let fmkdir dir =
   if not (Sys.file_exists dir) then
@@ -73,4 +78,5 @@ let () =
   copy (rdir "doc.css") "doc/css/doc.css" ;
   copy (rdir "highlight.pack.js") "doc/script/highlight.pack.js" ;
   copy (rdir "doc.js") "doc/script/doc.js" ;
-  copy (rdir "monokai.css") "doc/css/monokai.css"
+  copy (rdir "monokai.css") "doc/css/monokai.css" ;
+  cpdir (rdir "tipuesearch/") "doc/script/tipuesearch/"
