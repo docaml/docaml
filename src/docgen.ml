@@ -369,14 +369,14 @@ and mk_member_table root (vtable : (bool * string * type_expr * comment) list) =
 (* TODO Understand the arguments
    It is likely that a lot of it is due to Format
  *)
-and mk_entry s f2 a2 f3 a3 =
+and mk_entry s more rest =
   article [] (
     span [ classes [ "arrow-right" ; "arrow" ] ] [] ::
     span [ classes [ "showmore" ] ] [
       ocaml [ text s ] (* This time Victor put a <pre> around <code> as well. *)
     ] ::
-    div [ classes [ "more" ] ] (f2 a2) ::
-    f3 a3
+    div [ classes [ "more" ] ] more ::
+    rest
   )
 
 and mk_type_comment root (comment, typedata) =
@@ -413,30 +413,30 @@ and module_to_html root mdl =
                                          typedata.tname
                                          (type_expr_to_string e)
     in
-    [ mk_entry valtext (mk_type_comment root) (comment,typedata) (module_to_html root) t ]
-  (* | PP_Val (s, expr, comment) :: t ->
+    [ mk_entry valtext (mk_type_comment root (comment,typedata)) (module_to_html root t) ]
+  | PP_Val (s, expr, comment) :: t ->
     let valtext =
       Printf.sprintf "val %s : %s" s (type_expr_to_string expr)
     in
-    [ mk_entry valtext (comment_to_html root) comment (module_to_html root) t ]
-  | (PP_Exn (s, Some expr, comment))::t ->
+    [ mk_entry valtext (comment_to_html root comment) (module_to_html root t) ]
+  | PP_Exn (s, Some expr, comment) :: t ->
     let valtext =
       Printf.sprintf "exception %s of %s" s (type_expr_to_string expr)
     in
-    mk_entry ppf valtext (comment_to_html root) comment (module_to_html root) t
-  | (PP_Exn (s, None, comment))::t ->
+    [ mk_entry valtext (comment_to_html root comment) (module_to_html root t) ]
+  | PP_Exn (s, None, comment) :: t ->
     let valtext =
       Printf.sprintf "exception %s" s
     in
-    mk_entry ppf valtext (comment_to_html root) comment (module_to_html root) t
-  | (PP_ImplicitModule (name, typ, comment))::t ->
+    [ mk_entry valtext (comment_to_html root comment) (module_to_html root t) ]
+  | PP_ImplicitModule (name, typ, comment) :: t ->
     let valtext =
       Printf.sprintf "module %s : %s"
         name
         (type_expr_to_string typ);
     in
-    mk_entry ppf valtext (comment_to_html root) comment (module_to_html root) t
-  | (PP_Functor (fdata, comment))::t ->
+    [ mk_entry valtext (comment_to_html root comment) (module_to_html root t) ]
+  | PP_Functor (fdata, comment) :: t ->
     let funargs =
       List.map (fun (s1,s2) -> Printf.sprintf "(%s : %s)" s1 s2)
         fdata.fargs
@@ -455,8 +455,7 @@ and module_to_html root mdl =
         (if List.length fdata.fcons <> 0 then " with type " else "")
         constraints
     in
-    mk_entry ppf valtext (comment_to_html root) comment (module_to_html root) t *)
-  | _ -> []
+    [ mk_entry valtext (comment_to_html root comment) (module_to_html root t) ]
 
 and type_params_to_string = function
   | ParamTuple []  ->
