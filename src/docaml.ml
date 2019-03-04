@@ -44,7 +44,7 @@ let gen_relative directory modules =
 
 let () =
   if Array.length Sys.argv < 1 then begin
-    print_endline "Usage : docaml <file1.mli> ... <fileN.mli>";
+    print_endline "Usage : docaml <file1.mli> ... <fileN.mli>" ;
     exit 2
   end;
   fmkdir "doc" ;
@@ -57,6 +57,7 @@ let () =
     |> List.map (Docgen.preprocess_file)
   in
   gen_relative "doc" modules;
+  (* Index page *)
   let output = open_out "doc/index.html" in
   let page =
     Html.html [] [
@@ -66,7 +67,25 @@ let () =
     ]
   in
   Printf.fprintf output "%s" (Html.document_to_string page) ;
-  close_out output;
+  close_out output ;
+  (* Search page *)
+  let output = open_out "doc/search.html" in
+  let page =
+    let open Html in
+    let open Attribute in
+    html [] [
+      head [] [
+        Docgen.gen_header "" "Search" ;
+        Docgen.gen_aside "" None modules ;
+        main [] [
+          h1 [] [ text "Search" ] ;
+          div [ id "tipue_search_content" ] []
+        ]
+      ]
+    ]
+  in
+  Printf.fprintf output "%s" (Html.document_to_string page) ;
+  close_out output ;
   (* Resource directory *)
   let rdir s =
     String.concat "" [

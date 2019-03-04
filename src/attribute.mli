@@ -35,3 +35,15 @@ val src : string -> t
 
 (** Style of an element *)
 val style : string -> t
+
+(** Name of the element *)
+val name : string -> t
+
+(** Regular expression to validate against *)
+val pattern : string -> t
+
+(** Text to be displayed in tooltip when hovering over element *)
+val title : string -> t
+
+(** Indicates that an element is required *)
+val required : t

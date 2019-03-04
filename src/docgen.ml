@@ -550,7 +550,7 @@ let highlight_init_code =
 
 let gen_header root modulename =
   head [] [
-    title [] [
+    Html.title [] [
       text ("{placeholder} docaml generated documentation — " ^ modulename)
     ] ;
     meta [ charset "utf-8" ] ;
@@ -559,10 +559,16 @@ let gen_header root modulename =
       rel "stylesheet" ;
       typ "text/css"
     ] ;
+    (* script [ src "https://code.jquery.com/jquery-1.10.2.js" ] [] ; *)
+    script [ src "https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" ] [] ;
+    link [ rel "stylesheet" ; href "https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" ] ;
+    script [ src (root ^ "script/tipuesearch/tipuesearch_content.js") ] [] ;
+    link [ rel "stylesheet" ; href (root ^ "script/tipuesearch/tipuesearch.css") ] ;
+    script [ src (root ^ "script/tipuesearch/tipuesearch_set.js") ] [] ;
+    script [ src (root ^ "script/tipuesearch/tipuesearch.min.js") ] [] ;
     link [ rel "stylesheet" ; href (root ^ "css/monokai.css") ] ;
     link [ rel "stylesheet" ; href (root ^ "css/doc.css") ] ;
     script [ src (root ^ "script/highlight.pack.js") ] [] ;
-    script [ src "https://code.jquery.com/jquery-1.10.2.js" ] [] ;
     script [ src (root ^ "script/doc.js") ] [] ;
     script [ typ "text/javascript" ] [ text highlight_init_code ]
     (* link [ rel "shortcut icon" ; typ "image/x-icon" ; href (root ^ "img/favicon-ogaml.ico")] *)
@@ -651,6 +657,18 @@ let aside_header root =
     h1 [] [
       a [ href (root ^ "index.html") ] [
         text "docaml {placeholder}"
+      ]
+    ] ;
+    form [] [
+      div [ classes [ "tipue_search_group" ] ] [
+        input [
+          typ "text" ;
+          name "q" ;
+          id "tipue_search_input" ;
+          pattern ".{3,}" ;
+          title "At least 3 characters" ;
+          required
+        ]
       ]
     ]
   ]

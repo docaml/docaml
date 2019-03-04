@@ -155,3 +155,11 @@ val td : tag
 
 (** Row of cells of a table *)
 val tr : tag
+
+(*** Forms *)
+
+(** Form *)
+val form : tag
+
+(** Input *)
+val input : void_tag

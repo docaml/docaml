@@ -95,3 +95,6 @@ let table = mk "table"
 let tbody = mk "tbody"
 let td = mk "td"
 let tr = mk "tr"
+
+let form = mk "form"
+let input = mkvoid "input"
