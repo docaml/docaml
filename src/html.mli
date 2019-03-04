@@ -10,6 +10,11 @@ type t
 (** Utility to render in HTML format *)
 val to_string : t -> string
 
+(** Render an HTML document (typically the argument is the html tag)
+  * This will add the doctype at the beginning.
+ *)
+val document_to_string : t -> string
+
 (** Type of a regular tag *)
 type tag = Attribute.t list -> t list -> t
 
@@ -18,9 +23,6 @@ type void_tag = Attribute.t list -> t
 
 (** Text *)
 val text : string -> t
-
-(** Document type, to put at the beginning of a document *)
-val doctype : t
 
 (*** Main root *)
 

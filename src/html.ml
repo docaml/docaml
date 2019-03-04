@@ -28,13 +28,13 @@ let rec to_string h =
     end
   end
 
+let document_to_string h =
+  "<!DOCTYPE html>\n" ^ (to_string h)
+
 type tag = Attribute.t list -> t list -> t
 type void_tag = Attribute.t list -> t
 
 let text s = Text s
-
-let doctype =
-  Tag { name = "!DOCTYPE html" ; attributes = [] ; children = None }
 
 let mk name : tag =
   fun attributes children ->
