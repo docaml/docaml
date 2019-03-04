@@ -80,6 +80,11 @@ let () =
         main [] [
           h1 [] [ text "Search" ] ;
           div [ id "tipue_search_content" ] []
+        ] ;
+        script [] [
+          text "$(document).ready(function() {
+                  $('#tipue_search_input').tipuesearch();
+                });"
         ]
       ]
     ]
