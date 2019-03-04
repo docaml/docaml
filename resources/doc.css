@@ -213,7 +213,26 @@ aside {
 
 header {
   background-color: rgb(6, 121, 255);
+  padding: 1rem;
 }
+
+header h1 {
+  text-align: center;
+}
+
+header h1 a {
+  text-align: center;
+  color: #ffffff;
+}
+
+header h1 a:hover {
+  color: #cfcfcf;
+}
+
+/* header a {
+  padding-left: 0;
+  width: 100%;
+} */
 
 /*@media only screen and (max-width: 760pt) {
   header {
@@ -262,11 +281,6 @@ aside a {
   /*padding-left: 2pt;*/
   /*width: calc(100% - 2pt);*/
   color: rgb(55, 63, 65);
-}
-
-header a {
-  padding-left: 0;
-  width: 100%;
 }
 
 aside a:hover {

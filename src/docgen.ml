@@ -648,8 +648,10 @@ let gen_index_main root modules =
 
 let aside_header root =
   header [] [
-    a [ href (root ^ "index.html") ] [
-      text "docaml {placeholder}"
+    h1 [] [
+      a [ href (root ^ "index.html") ] [
+        text "docaml {placeholder}"
+      ]
     ]
   ]
 
