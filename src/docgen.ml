@@ -578,7 +578,7 @@ let gen_main_pp modl root =
   in
   let print_headmodule =
     h1 [] [
-      text "Module" ;
+      text "Module " ;
       span [ classes [ "prefix" ] ] [ text hierarchy ] ;
       span [ classes [ "modulename" ] ] [ text modl.modulename ]
     ] ::
