@@ -51,6 +51,20 @@ let () =
   fmkdir "doc/css" ;
   fmkdir "doc/script" ;
   fmkdir "doc/img" ;
+  (* Resource directory *)
+  let rdir s =
+    String.concat "" [
+      Filename.dirname Sys.executable_name ;
+      "/../share/docaml/" ;
+      s
+    ]
+  in
+  copy (rdir "doc.css") "doc/css/doc.css" ;
+  copy (rdir "highlight.pack.js") "doc/script/highlight.pack.js" ;
+  copy (rdir "doc.js") "doc/script/doc.js" ;
+  copy (rdir "monokai.css") "doc/css/monokai.css" ;
+  cpdir (rdir "tipuesearch/") "doc/script/tipuesearch/" ;
+  (* Now we can generate the doc itself *)
   let modules =
     Array.to_list Sys.argv
     |> List.tl
@@ -103,16 +117,19 @@ let () =
   in
   Printf.fprintf output "%s" (Html.document_to_string page) ;
   close_out output ;
-  (* Resource directory *)
-  let rdir s =
-    String.concat "" [
-      Filename.dirname Sys.executable_name ;
-      "/../share/docaml/" ;
-      s
-    ]
+  (* Search content *)
+  let search_aux modl =
+    let open ASTpp in
+    Printf.sprintf
+      "{ \"title\":\"%s\", \"text\":\"%s\", \"tags\":\"%s\", \"note\":\"%s\", \"url\":\"%s\" }"
+      modl.modulename
+      "This is fake content" (* TODO Content *)
+      "" (* TODO Tags *)
+      "This is probably a module. Containing some definitions." (* TODO Note. Probably the subtitle. *)
+      "index.html" (* TODO Url *)
   in
-  copy (rdir "doc.css") "doc/css/doc.css" ;
-  copy (rdir "highlight.pack.js") "doc/script/highlight.pack.js" ;
-  copy (rdir "doc.js") "doc/script/doc.js" ;
-  copy (rdir "monokai.css") "doc/css/monokai.css" ;
-  cpdir (rdir "tipuesearch/") "doc/script/tipuesearch/"
+  let output = open_out "doc/script/tipuesearch/tipuesearch_content.js" in
+  Printf.fprintf output
+    "var tipuesearch = {\"pages\": [%s]};"
+    (String.concat ", " (List.map search_aux modules)) ;
+  close_out output
