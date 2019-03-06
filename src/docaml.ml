@@ -118,18 +118,24 @@ let () =
   Printf.fprintf output "%s" (Html.document_to_string page) ;
   close_out output ;
   (* Search content *)
-  let search_aux modl =
+  let flatmap f l = List.flatten (List.map f l) in
+  let rec search_aux path modl : string list =
     let open ASTpp in
+    let path = path ^ String.lowercase_ascii modl.modulename in
+    let url = path ^ ".html" in
+    let path = path ^ "/" in
     Printf.sprintf
       "{ \"title\":\"%s\", \"text\":\"%s\", \"tags\":\"%s\", \"note\":\"%s\", \"url\":\"%s\" }"
       modl.modulename
       "This is fake content" (* TODO Content *)
       "" (* TODO Tags *)
       "This is probably a module. Containing some definitions." (* TODO Note. Probably the subtitle. *)
-      "index.html" (* TODO Url *)
+      url
+    :: flatmap (search_aux path) modl.submodules
+    @ flatmap (search_aux path) modl.signatures
   in
   let output = open_out "doc/script/tipuesearch/tipuesearch_content.js" in
   Printf.fprintf output
     "var tipuesearch = {\"pages\": [%s]};"
-    (String.concat ", " (List.map search_aux modules)) ;
+    (String.concat ", " (flatmap (search_aux "") modules)) ;
   close_out output
