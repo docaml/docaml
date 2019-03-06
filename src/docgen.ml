@@ -601,7 +601,7 @@ let gen_main_pp modl root =
       in
       tr [] [
         td [] [
-          a [ href (root ^ link) ] [ text h.modulename ]
+          a [ href (root ^ link ^ ".html") ] [ text h.modulename ]
         ] ;
         td [] (comment_to_html root h.description)
       ] :: print_submodules_aux t
