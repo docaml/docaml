@@ -15,6 +15,9 @@ val to_string : t -> string
  *)
 val document_to_string : t -> string
 
+(** Utility to ignore tags and render as plain text *)
+val to_text : t -> string
+
 (** Type of a regular tag *)
 type tag = Attribute.t list -> t list -> t
 

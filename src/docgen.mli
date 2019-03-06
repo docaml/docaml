@@ -24,3 +24,7 @@ val gen_aside :
   ASTpp.module_data option ->
   ASTpp.module_data list ->
   Html.t
+
+val gen_search_content : ASTpp.module_data -> string
+
+val gen_search_note : ASTpp.module_data -> string

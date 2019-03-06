@@ -711,3 +711,11 @@ let gen_aside root curr modules =
       [ id "main-nav" ; style "display: block;" ]
       (gen_aside_modules root curr modules)
   ]
+
+let gen_search_content modl =
+  gen_main "" modl |> to_text
+
+let gen_search_note modl =
+  comment_to_html "" modl.description
+  |> List.map to_text
+  |> String.concat " "

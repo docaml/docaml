@@ -36,6 +36,14 @@ let rec to_string h =
 let document_to_string h =
   "<!DOCTYPE html>\n" ^ (to_string h)
 
+let rec to_text h =
+  begin match h with
+  | Text s -> s
+  | Tag { children = Some l ; _ } ->
+    String.concat " " (List.map to_text l)
+  | Tag { children = None ; _ } -> ""
+  end
+
 type tag = Attribute.t list -> t list -> t
 type void_tag = Attribute.t list -> t
 

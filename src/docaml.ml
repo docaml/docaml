@@ -127,9 +127,9 @@ let () =
     Printf.sprintf
       "{ \"title\":\"%s\", \"text\":\"%s\", \"tags\":\"%s\", \"note\":\"%s\", \"url\":\"%s\" }"
       modl.modulename
-      "This is fake content" (* TODO Content *)
+      (String.escaped (Docgen.gen_search_content modl))
       "" (* TODO Tags *)
-      "This is probably a module. Containing some definitions." (* TODO Note. Probably the subtitle. *)
+      (String.escaped (Docgen.gen_search_note modl))
       url
     :: flatmap (search_aux path) modl.submodules
     @ flatmap (search_aux path) modl.signatures
