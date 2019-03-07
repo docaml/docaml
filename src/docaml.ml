@@ -17,7 +17,7 @@ let rec relative_root = function
   | 0 -> ""
   | n -> "../" ^ (relative_root (n-1))
 
-let gen_relative directory modules =
+let gen_relative config directory modules =
   let open ASTpp in
   let rec gen_aux directory modl =
     let dir = Unix.getcwd () in
@@ -27,8 +27,8 @@ let gen_relative directory modules =
     let page =
       let root = relative_root (List.length modl.hierarchy) in
       Html.html [] [
-        Docgen.gen_header root modl.modulename ;
-        Docgen.gen_aside root (Some modl) modules ;
+        Docgen.gen_header config root modl.modulename ;
+        Docgen.gen_aside config root (Some modl) modules ;
         Docgen.gen_main root modl
       ]
     in
@@ -46,7 +46,10 @@ let () =
   if Array.length Sys.argv < 1 then begin
     print_endline "Usage : docaml <file1.mli> ... <fileN.mli>" ;
     exit 2
-  end;
+  end ;
+  (* Getting configuration *)
+  let config = Config.from_file "docaml" in
+  (* Creating the doc *)
   fmkdir "doc" ;
   fmkdir "doc/css" ;
   fmkdir "doc/script" ;
@@ -70,14 +73,14 @@ let () =
     |> List.tl
     |> List.map (Docgen.preprocess_file)
   in
-  gen_relative "doc" modules;
+  gen_relative config "doc" modules;
   (* Index page *)
   let output = open_out "doc/index.html" in
   let page =
     Html.html [] [
-      Docgen.gen_header "" "Index" ;
-      Docgen.gen_aside "" None modules ;
-      Docgen.gen_index_main "" modules
+      Docgen.gen_header config "" "Index" ;
+      Docgen.gen_aside config "" None modules ;
+      Docgen.gen_index_main config "" modules
     ]
   in
   Printf.fprintf output "%s" (Html.document_to_string page) ;
@@ -89,8 +92,8 @@ let () =
     let open Attribute in
     html [] [
       head [] [
-        Docgen.gen_header "" "Search" ;
-        Docgen.gen_aside "" None modules ;
+        Docgen.gen_header config "" "Search" ;
+        Docgen.gen_aside config "" None modules ;
         main [] [
           h1 [] [ text "Search" ] ;
           form [] [
