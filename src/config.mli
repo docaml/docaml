@@ -8,3 +8,6 @@ val from_file : string -> t
 
 (** Project name *)
 val name : t -> string
+
+(** List of paths to modules *)
+val modules : t -> string list

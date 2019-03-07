@@ -8,8 +8,7 @@ install: docaml
 	dune install
 
 doc: docaml install
-	# docaml src/AST.mli src/ASTpp.mli src/attribute.mli src/docgen.mli src/html.mli
-	docaml src/attribute.mli src/docgen.mli src/html.mli
+	docaml build
 
 clean:
 	dune clean && \

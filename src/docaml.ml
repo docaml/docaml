@@ -43,10 +43,10 @@ let gen_relative config directory modules =
   List.iter (gen_aux directory) modules
 
 let () =
-  if Array.length Sys.argv < 1 then begin
+  (* if Array.length Sys.argv < 1 then begin
     print_endline "Usage : docaml <file1.mli> ... <fileN.mli>" ;
     exit 2
-  end ;
+  end ; *)
   (* Getting configuration *)
   let config = Config.from_file "docaml" in
   (* Creating the doc *)
@@ -68,10 +68,14 @@ let () =
   copy (rdir "monokai.css") "doc/css/monokai.css" ;
   cpdir (rdir "tipuesearch/") "doc/script/tipuesearch/" ;
   (* Now we can generate the doc itself *)
-  let modules =
+  (* let modules =
     Array.to_list Sys.argv
     |> List.tl
     |> List.map (Docgen.preprocess_file)
+  in *)
+  let modules =
+    Config.modules config
+    |> List.map Docgen.preprocess_file
   in
   gen_relative config "doc" modules;
   (* Index page *)
