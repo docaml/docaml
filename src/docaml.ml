@@ -42,9 +42,12 @@ let gen_relative config directory modules =
   in
   List.iter (gen_aux directory) modules
 
+let find_config () =
+  Sys.file_exists "docaml" && not (Sys.is_directory "docaml")
+
 let docaml_build () =
   (* Getting configuration *)
-  if not (Sys.file_exists "docaml") then
+  if not (find_config ()) then
     Printf.printf "You should have a docaml file in this directory\n" ;
   let config = Config.from_file "docaml" in
   (* Creating the doc *)
@@ -170,7 +173,7 @@ let () =
   in
   match args with
   | [] ->
-    if Sys.file_exists "docaml" then begin
+    if find_config () then begin
       try begin
         let _ = Config.from_file "docaml" in
         Printf.printf "Type the following to build the doc: docaml build\n"
