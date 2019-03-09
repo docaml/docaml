@@ -16,67 +16,29 @@ let newline = ('\013' * '\010')
 
 let blank = [' ' '\009' '\012']
 
-let integers = ['0'-'9']
-
-let lowercase = ['a'-'z']
-
-let uppercase  = ['A'-'Z']
-
 let identchar = ['A'-'Z' 'a'-'z' '_' '0'-'9']
-
-let symbolchar = ['>' '<' '=' '*' '+' '-' '/' '&' '|' '!']
 
 rule token = parse
   | blank +
-    {token lexbuf}
+    { token lexbuf }
   | newline
-    {Lexing.new_line lexbuf; token lexbuf}
+    { Lexing.new_line lexbuf; token lexbuf }
   | eof
     {EOF}
-  | lowercase identchar *
-    {try Hashtbl.find keywords_table (Lexing.lexeme lexbuf)
-     with Not_found -> LIDENT (Lexing.lexeme lexbuf)}
-  | uppercase identchar *
-    {try Hashtbl.find keywords_table (Lexing.lexeme lexbuf)
-     with Not_found -> UIDENT (Lexing.lexeme lexbuf)}
-  | '(' symbolchar * ')' {OPERATOR (Lexing.lexeme lexbuf)}
-  | "(*"   {COMMENT (read_comment (Buffer.create 13) lexbuf)}
-  | "_"  {UNDERSCORE}
-  | "'"  {APOSTROPHE}
-  | "`"  {QUOTE}
-  | "?"  {QMARK}
-  | "("  {LPAREN}
-  | ")"  {RPAREN}
-  | "*"  {STAR}
+  | identchar +
+    {
+      try Hashtbl.find keywords_table (Lexing.lexeme lexbuf)
+      with Not_found -> IDENT (Lexing.lexeme lexbuf)
+    }
+  | [^'\\' '\n'] + { PATH (Lexing.lexeme lexbuf) }
+  | "(*"   { read_comment lexbuf }
   | ":"  {COLON}
-  | ","  {COMMA}
-  | ";"  {SEMICOLON}
-  | "="  {EQUALS}
-  | "{"  {LBRACE}
-  | "}"  {RBRACE}
-  | "["  {LBRACK}
-  | "]"  {RBRACK}
-  | "|"  {PIPE}
-  | "."  {DOT}
-  | "->" {ARROW}
-  | "<"  {LOWER}
-  | ">"  {GREATER}
   | _  {raise (SyntaxError ("Syntax Error, unknown char."))}
 
-and read_comment buf = parse
-  | "*)"      { Buffer.contents buf }
-  | newline   { Lexing.new_line lexbuf ;
-                Buffer.add_char buf '\n' ;
-                read_comment buf lexbuf }
-  | '*'
-    {
-      Buffer.add_char buf '*';
-      read_comment buf lexbuf
-    }
-  | [^ '*' '\r' '\n']+
-    {
-      Buffer.add_string buf (Lexing.lexeme lexbuf);
-      read_comment buf lexbuf
-    }
+and read_comment = parse
+  | "*)"               { token lexbuf }
+  | newline            { Lexing.new_line lexbuf ; read_comment lexbuf }
+  | '*'                { read_comment lexbuf }
+  | [^ '*' '\r' '\n']+ { read_comment lexbuf }
   | eof { raise (SyntaxError ("Comment not terminated")) }
   | _   { assert false }

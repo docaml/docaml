@@ -1,12 +1,12 @@
-(ocamllex lexer)
+(ocamllex lexer config_lexer)
 
 (menhir
- (modules parser))
+ (modules parser config_parser))
 
 (executable
   (name docaml)
   (public_name docaml)
-  (modules_without_implementation aST aSTpp)
+  (modules_without_implementation aST aSTpp config_ast)
   (libraries unix str))
 
 (install

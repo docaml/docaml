@@ -48,6 +48,8 @@ let () =
     exit 2
   end ; *)
   (* Getting configuration *)
+  if not (Sys.file_exists "docaml") then
+    Printf.printf "You should have a docaml file in this directory\n" ;
   let config = Config.from_file "docaml" in
   (* Creating the doc *)
   fmkdir "doc" ;
