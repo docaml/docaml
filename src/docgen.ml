@@ -50,7 +50,7 @@ and token_inline s i =
   if i >= String.length s then
     error "Unterminated code inline";
   match s.[i] with
-  | '$' -> i
+  | ']' -> i
   |  _  -> token_inline s (i+1)
 
 and token_related s i =
@@ -71,7 +71,7 @@ and token_comment s a i =
     else [PP_CommentString (String.sub s a (i-a))]
   end else begin
     match s.[i] with
-    | '$' ->
+    | '[' ->
       let str = String.sub s a (i-a) in
       let j = token_inline s (i+1) in
       (PP_CommentString str) ::
