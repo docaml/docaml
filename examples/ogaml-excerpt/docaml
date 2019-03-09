@@ -1,3 +1,4 @@
 (* ogaml excerpt documentation config *)
 name: ogaml
 modules: ogamlGraphics.mli ogamlUtils.mli
+custom css: ogaml.css

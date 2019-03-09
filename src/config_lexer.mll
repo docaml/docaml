@@ -9,6 +9,8 @@
     Hashtbl.create 19
     |> h_add "name"      NAME
     |> h_add "modules"   MODULES
+    |> h_add "custom"    CUSTOM
+    |> h_add "css"       CSS
 
 }
 
