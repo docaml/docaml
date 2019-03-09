@@ -669,7 +669,14 @@ let aside_header config root =
   header [] [
     h1 [] [
       a [ href (root ^ "index.html") ] [
-        text (Config.name config)
+        begin match Config.header_logo config with
+        | Some logo ->
+          img [
+            src (root ^ "img/" ^ Filename.basename logo) ;
+            alt (Config.name config)
+          ]
+        | None -> text (Config.name config)
+        end
       ]
     ] ;
     form [ action (root ^ "search.html") ] [

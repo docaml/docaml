@@ -50,3 +50,6 @@ val required : t
 
 (** URI of a program that processes the submitted form *)
 val action : string -> t
+
+(** Alternative text in case image can't be displayed *)
+val alt : string -> t

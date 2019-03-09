@@ -76,6 +76,11 @@ let () =
     List.iter (fun f -> copy f ("doc/css/custom/" ^ Filename.basename f)) css
   | None -> ()
   end ;
+  (* Same with custom logo *)
+  begin match Config.header_logo config with
+  | Some logo -> copy logo ("doc/img/" ^ Filename.basename logo)
+  | None -> ()
+  end ;
   (* Now we can generate the doc itself *)
   (* let modules =
     Array.to_list Sys.argv
