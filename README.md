@@ -62,3 +62,21 @@ the `doc` subdirectory of the current directory.
 
 In order to clean, you can use `docaml clean` which will remove the `doc`
 folder and its subdirectories.
+
+### Comments in mli
+
+docaml reads the comments in the mli files and turns them into documentation.
+For a comment to be interpreted by docaml, it must have two stars at the beginning. 
+```ocaml
+(** ... *)
+```
+You can also use three stars to make a title.
+```ocaml
+(*** ... *)
+```
+Withing the doc comments you can highlight ocaml code by putting it between square brackets.
+```ocaml
+(** Plain text [ocaml code] *)
+```
+You can also reference some other function by using the `@see: Full.Path.To.Function`
+within the comments associated to a function.
