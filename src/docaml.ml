@@ -161,7 +161,9 @@ let docaml_build () =
   close_out output
 
 let docaml_clean () =
-  Printf.printf "Not implemented yet\n"
+  (* TODO Read the docaml file first *)
+  if Sys.file_exists "doc" then
+    Unix.system "rm -rf doc" |> ignore
 
 let docaml_init () =
   (* TODO Only do it if doesn't exist *)
