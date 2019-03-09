@@ -549,7 +549,16 @@ let highlight_init_code =
    }"
 
 let gen_header config root modulename =
-  head [] [
+  let custom =
+    let f path =
+      let base = Filename.basename path in
+      link [ rel "stylesheet" ; href (root ^ "css/custom/" ^ base) ]
+    in
+    match Config.custom_css config with
+    | Some css -> List.map (fun path -> f path) css
+    | None -> []
+  in
+  head [] ([
     Html.title [] [
       text (Printf.sprintf "%s — %s" (Config.name config) modulename)
     ] ;
@@ -572,7 +581,7 @@ let gen_header config root modulename =
     script [ src (root ^ "script/doc.js") ] [] ;
     script [ typ "text/javascript" ] [ text highlight_init_code ]
     (* link [ rel "shortcut icon" ; typ "image/x-icon" ; href (root ^ "img/favicon-ogaml.ico")] *)
-  ]
+  ] @ custom)
 
 let gen_main_pp modl root =
   let hierarchy =

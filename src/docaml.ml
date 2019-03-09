@@ -69,6 +69,13 @@ let () =
   copy (rdir "doc.js") "doc/script/doc.js" ;
   copy (rdir "monokai.css") "doc/css/monokai.css" ;
   cpdir (rdir "tipuesearch/") "doc/script/tipuesearch/" ;
+  (* If there is custom css to copy, we do it now *)
+  begin match Config.custom_css config with
+  | Some css ->
+    fmkdir "doc/css/custom" ;
+    List.iter (fun f -> copy f ("doc/css/custom/" ^ Filename.basename f)) css
+  | None -> ()
+  end ;
   (* Now we can generate the doc itself *)
   (* let modules =
     Array.to_list Sys.argv
