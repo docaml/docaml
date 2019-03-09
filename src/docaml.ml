@@ -45,6 +45,14 @@ let gen_relative config directory modules =
 let find_config () =
   Sys.file_exists "docaml" && not (Sys.is_directory "docaml")
 
+(* Resource directory *)
+let rdir s =
+  String.concat "" [
+    Filename.dirname Sys.executable_name ;
+    "/../share/docaml/" ;
+    s
+  ]
+
 let docaml_build () =
   (* Getting configuration *)
   if not (find_config ()) then
@@ -55,14 +63,6 @@ let docaml_build () =
   fmkdir "doc/css" ;
   fmkdir "doc/script" ;
   fmkdir "doc/img" ;
-  (* Resource directory *)
-  let rdir s =
-    String.concat "" [
-      Filename.dirname Sys.executable_name ;
-      "/../share/docaml/" ;
-      s
-    ]
-  in
   copy (rdir "doc.css") "doc/css/doc.css" ;
   copy (rdir "highlight.pack.js") "doc/script/highlight.pack.js" ;
   copy (rdir "doc.js") "doc/script/doc.js" ;
@@ -164,7 +164,8 @@ let docaml_clean () =
   Printf.printf "Not implemented yet\n"
 
 let docaml_init () =
-  Printf.printf "Not implemented yet\n"
+  (* TODO Only do it if doesn't exist *)
+  copy (rdir "docaml") "docaml"
 
 let () =
   let args =
@@ -182,7 +183,7 @@ let () =
         Printf.printf "There are some errors in the `docaml` file:\n%s" s
     end
     else begin
-      Printf.printf "`docaml` file is missing.\nUse `docaml init` to create it step by step.\n"
+      Printf.printf "`docaml` file is missing.\nUse `docaml init` to create it, you will then have to fill it.\n"
     end
   | [ "build" ] -> docaml_build ()
   | [ "clean" ] -> docaml_clean ()

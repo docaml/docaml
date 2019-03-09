@@ -12,6 +12,7 @@
 (install
   (section share)
   (files (../resources/doc.css as doc.css)
+         (../resources/docaml as docaml)
          (../resources/doc.js as doc.js)
          (../resources/highlight.pack.js as highlight.pack.js)
          (../resources/monokai.css as monokai.css)
