@@ -32,11 +32,20 @@ let check c =
   if c.name = None then error "Field name mandatory" ;
   if c.modules = None then error "Field modules mandatory"
 
+let with_name c name =
+  match c.name with
+  | None -> { c with name = Some name }
+  | Some _ -> error "Cannot set name twice"
+
+let with_modules c modules =
+  match c.modules with
+  | None -> { c with modules = Some modules }
+  | Some _ -> error "Cannot set modules twice"
+
 let rec from_ast c ast =
-  (* TODO Verify double assignments *)
   match ast with
-  | Name name :: ast -> from_ast { c with name = Some name } ast
-  | Modules modules :: ast -> from_ast { c with modules = Some modules } ast
+  | Name name :: ast -> from_ast (with_name c name) ast
+  | Modules modules :: ast -> from_ast (with_modules c modules) ast
   | [] -> check c ; c
 
 let from_file f =
