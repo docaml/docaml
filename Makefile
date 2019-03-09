@@ -3,13 +3,13 @@
 docaml:
 	dune build @src/all --profile release
 
-install: docaml
+install:
 	dune build @install && \
 	dune install
 
-doc: docaml install
+doc:
 	docaml build
 
 clean:
 	dune clean && \
-	rm -rf doc
+	docaml clean
