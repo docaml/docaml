@@ -558,6 +558,16 @@ let gen_header config root modulename =
     | Some css -> List.map (fun path -> f path) css
     | None -> []
   in
+  let custom =
+    match Config.favicon config with
+    | Some ico ->
+      link [
+        rel "shortcut icon" ;
+        typ "image/x-icon" ;
+        href (root ^ "img/" ^ Filename.basename ico)
+      ] :: custom
+    | None -> custom
+  in
   head [] ([
     Html.title [] [
       text (Printf.sprintf "%s — %s" (Config.name config) modulename)
@@ -580,7 +590,6 @@ let gen_header config root modulename =
     script [ src (root ^ "script/highlight.pack.js") ] [] ;
     script [ src (root ^ "script/doc.js") ] [] ;
     script [ typ "text/javascript" ] [ text highlight_init_code ]
-    (* link [ rel "shortcut icon" ; typ "image/x-icon" ; href (root ^ "img/favicon-ogaml.ico")] *)
   ] @ custom)
 
 let gen_main_pp modl root =

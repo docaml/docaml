@@ -81,6 +81,11 @@ let () =
   | Some logo -> copy logo ("doc/img/" ^ Filename.basename logo)
   | None -> ()
   end ;
+  (* And with favicon *)
+  begin match Config.favicon config with
+  | Some ico -> copy ico ("doc/img/" ^ Filename.basename ico)
+  | None -> ()
+  end ;
   (* Now we can generate the doc itself *)
   (* let modules =
     Array.to_list Sys.argv
