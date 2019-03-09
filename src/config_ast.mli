@@ -5,3 +5,4 @@ type t =
 | Modules of string list
 | CustomCSS of string list
 | HeaderLogo of string
+| Favicon of string

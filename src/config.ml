@@ -5,7 +5,8 @@ type t = {
   name : string option ;
   modules : string list option ;
   custom_css : string list option ;
-  header_logo : string option
+  header_logo : string option ;
+  favicon : string option
 }
 
 exception Error of string
@@ -54,12 +55,18 @@ let with_header_logo c header_logo =
   | None -> { c with header_logo = Some header_logo }
   | Some _ -> error "Cannot set header logo twice"
 
+let with_favicon c ico =
+  match c.favicon with
+  | None -> { c with favicon = Some ico }
+  | Some _ -> error "Cannot set favicon twice"
+
 let rec from_ast c ast =
   match ast with
   | Name name :: ast -> from_ast (with_name c name) ast
   | Modules modules :: ast -> from_ast (with_modules c modules) ast
   | CustomCSS custom_css :: ast -> from_ast (with_custom_css c custom_css) ast
   | HeaderLogo logo :: ast -> from_ast (with_header_logo c logo) ast
+  | Favicon ico :: ast -> from_ast (with_favicon c ico) ast
   | [] -> check c ; c
 
 let from_file f =
@@ -72,7 +79,8 @@ let from_file f =
     name = None ;
     modules = None ;
     custom_css = None ;
-    header_logo = None
+    header_logo = None ;
+    favicon = None
   } in
   from_ast default ast
 
@@ -89,3 +97,5 @@ let modules config =
 let custom_css config = config.custom_css
 
 let header_logo config = config.header_logo
+
+let favicon config = config.favicon

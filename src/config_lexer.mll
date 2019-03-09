@@ -13,6 +13,7 @@
     |> h_add "css"       CSS
     |> h_add "header"    HEADER
     |> h_add "logo"      LOGO
+    |> h_add "favicon"   FAVICON
 
 }
 
@@ -28,9 +29,9 @@ rule token = parse
   | newline
     { Lexing.new_line lexbuf; token lexbuf }
   | eof
-    {EOF}
+    { EOF }
   | "(*"   { read_comment lexbuf }
-  | ":"  {COLON}
+  | ":"  { COLON }
   | [^ '\\' '\n' ':' '(' ' ' '\009' '\012'] +
     {
       try Hashtbl.find keywords_table (Lexing.lexeme lexbuf)
