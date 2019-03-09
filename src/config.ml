@@ -4,7 +4,8 @@ open Config_ast
 type t = {
   name : string option ;
   modules : string list option ;
-  custom_css : string list option
+  custom_css : string list option ;
+  header_logo : string option
 }
 
 exception Error of string
@@ -48,11 +49,17 @@ let with_custom_css c custom_css =
   | None -> { c with custom_css = Some custom_css }
   | Some _ -> error "Cannot set custom css twice"
 
+let with_header_logo c header_logo =
+  match c.header_logo with
+  | None -> { c with header_logo = Some header_logo }
+  | Some _ -> error "Cannot set header logo twice"
+
 let rec from_ast c ast =
   match ast with
   | Name name :: ast -> from_ast (with_name c name) ast
   | Modules modules :: ast -> from_ast (with_modules c modules) ast
   | CustomCSS custom_css :: ast -> from_ast (with_custom_css c custom_css) ast
+  | HeaderLogo logo :: ast -> from_ast (with_header_logo c logo) ast
   | [] -> check c ; c
 
 let from_file f =
@@ -64,7 +71,8 @@ let from_file f =
   let default = {
     name = None ;
     modules = None ;
-    custom_css = None
+    custom_css = None ;
+    header_logo = None
   } in
   from_ast default ast
 
@@ -79,3 +87,5 @@ let modules config =
   | None -> assert false
 
 let custom_css config = config.custom_css
+
+let header_logo config = config.header_logo

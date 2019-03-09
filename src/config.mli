@@ -14,3 +14,6 @@ val modules : t -> string list
 
 (** Optional list of custom CSS files *)
 val custom_css : t -> string list option
+
+(** Optional logo to replace name in header *)
+val header_logo : t -> string option

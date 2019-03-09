@@ -11,6 +11,8 @@
     |> h_add "modules"   MODULES
     |> h_add "custom"    CUSTOM
     |> h_add "css"       CSS
+    |> h_add "header"    HEADER
+    |> h_add "logo"      LOGO
 
 }
 
