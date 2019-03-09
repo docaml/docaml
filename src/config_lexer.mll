@@ -25,14 +25,13 @@ rule token = parse
     { Lexing.new_line lexbuf; token lexbuf }
   | eof
     {EOF}
-  | identchar +
-    {
-      try Hashtbl.find keywords_table (Lexing.lexeme lexbuf)
-      with Not_found -> IDENT (Lexing.lexeme lexbuf)
-    }
-  | [^'\\' '\n'] + { PATH (Lexing.lexeme lexbuf) }
   | "(*"   { read_comment lexbuf }
   | ":"  {COLON}
+  | [^ '\\' '\n' ':' '(' ' ' '\009' '\012'] +
+    {
+      try Hashtbl.find keywords_table (Lexing.lexeme lexbuf)
+      with Not_found -> STRING (Lexing.lexeme lexbuf)
+    }
   | _  {raise (SyntaxError ("Syntax Error, unknown char."))}
 
 and read_comment = parse

@@ -1,3 +1,3 @@
 (* This is a comment *)
 name: docaml
-modules: src/attribute.mli src/docgen.mli src/html.mli
+modules: src/attribute.mli src/docgen.mli src/html.mli src/config.mli
