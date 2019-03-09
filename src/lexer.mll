@@ -3,7 +3,7 @@
 
   exception SyntaxError of string
 
-  let h_add k e t = Hashtbl.add t k e; t
+  let h_add k e t = Hashtbl.add t k e ; t
 
   let keywords_table =
     Hashtbl.create 19
@@ -38,47 +38,47 @@ let symbolchar = ['>' '<' '=' '*' '+' '-' '/' '&' '|' '!']
 
 rule token = parse
   | blank +
-    {token lexbuf}
+    { token lexbuf }
   | newline
-    {Lexing.new_line lexbuf; token lexbuf}
+    { Lexing.new_line lexbuf ; token lexbuf }
   | eof
-    {EOF}
+    { EOF }
   | lowercase identchar *
-    {try Hashtbl.find keywords_table (Lexing.lexeme lexbuf)
-     with Not_found -> LIDENT (Lexing.lexeme lexbuf)}
+    { try Hashtbl.find keywords_table (Lexing.lexeme lexbuf)
+      with Not_found -> LIDENT (Lexing.lexeme lexbuf) }
   | uppercase identchar *
-    {try Hashtbl.find keywords_table (Lexing.lexeme lexbuf)
-     with Not_found -> UIDENT (Lexing.lexeme lexbuf)}
-  | '(' symbolchar * ')' {OPERATOR (Lexing.lexeme lexbuf)}
-  | "(***" {TITLECOMMENT (read_comment (Buffer.create 13) lexbuf)}
-  | "(**"  {DOCCOMMENT (read_comment (Buffer.create 13) lexbuf)}
-  | "(*"   {COMMENT (read_comment (Buffer.create 13) lexbuf)}
-  | "_"  {UNDERSCORE}
-  | "'"  {APOSTROPHE}
-  | "`"  {QUOTE}
-  | "?"  {QMARK}
-  | "("  {LPAREN}
-  | ")"  {RPAREN}
-  | "*"  {STAR}
-  | ":"  {COLON}
-  | ","  {COMMA}
-  | ";"  {SEMICOLON}
-  | "="  {EQUALS}
-  | "{"  {LBRACE}
-  | "}"  {RBRACE}
-  | "["  {LBRACK}
-  | "]"  {RBRACK}
-  | "|"  {PIPE}
-  | "."  {DOT}
-  | "->" {ARROW}
-  | "<"  {LOWER}
-  | ">"  {GREATER}
-  | _  {raise (SyntaxError ("Syntax Error, unknown char."))}
+    { try Hashtbl.find keywords_table (Lexing.lexeme lexbuf)
+      with Not_found -> UIDENT (Lexing.lexeme lexbuf) }
+  | '(' symbolchar * ')' { OPERATOR (Lexing.lexeme lexbuf) }
+  | "(***" { TITLECOMMENT (read_comment (Buffer.create 13) lexbuf) }
+  | "(**"  { DOCCOMMENT (read_comment (Buffer.create 13) lexbuf) }
+  | "(*"   { COMMENT (read_comment (Buffer.create 13) lexbuf) }
+  | "_"  { UNDERSCORE }
+  | "'"  { APOSTROPHE }
+  | "`"  { QUOTE }
+  | "?"  { QMARK }
+  | "("  { LPAREN }
+  | ")"  { RPAREN }
+  | "*"  { STAR }
+  | ":"  { COLON }
+  | ","  { COMMA }
+  | ";"  { SEMICOLON }
+  | "="  { EQUALS }
+  | "{"  { LBRACE }
+  | "}"  { RBRACE }
+  | "["  { LBRACK }
+  | "]"  { RBRACK }
+  | "|"  { PIPE }
+  | "."  { DOT }
+  | "->" { ARROW }
+  | "<"  { LOWER }
+  | ">"  { GREATER }
+  | _  { raise (SyntaxError ("Syntax Error, unknown char.")) }
 
 and read_comment buf = parse
   | "*)"      { Buffer.contents buf }
-  | newline   { Lexing.new_line lexbuf;
-                Buffer.add_char buf '\n';
+  | newline   { Lexing.new_line lexbuf ;
+                Buffer.add_char buf '\n' ;
                 read_comment buf lexbuf }
   | '*'
     {
@@ -87,7 +87,7 @@ and read_comment buf = parse
     }
   | [^ '*' '\r' '\n']+
     {
-      Buffer.add_string buf (Lexing.lexeme lexbuf);
+      Buffer.add_string buf (Lexing.lexeme lexbuf) ;
       read_comment buf lexbuf
     }
   | eof { raise (SyntaxError ("Comment not terminated")) }
