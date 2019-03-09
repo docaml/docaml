@@ -42,11 +42,7 @@ let gen_relative config directory modules =
   in
   List.iter (gen_aux directory) modules
 
-let () =
-  (* if Array.length Sys.argv < 1 then begin
-    print_endline "Usage : docaml <file1.mli> ... <fileN.mli>" ;
-    exit 2
-  end ; *)
+let docaml_build () =
   (* Getting configuration *)
   if not (Sys.file_exists "docaml") then
     Printf.printf "You should have a docaml file in this directory\n" ;
@@ -87,11 +83,6 @@ let () =
   | None -> ()
   end ;
   (* Now we can generate the doc itself *)
-  (* let modules =
-    Array.to_list Sys.argv
-    |> List.tl
-    |> List.map (Docgen.preprocess_file)
-  in *)
   let modules =
     Config.modules config
     |> List.map Docgen.preprocess_file
@@ -165,3 +156,32 @@ let () =
     "var tipuesearch = {\"pages\": [%s]};"
     (String.concat ", " (flatmap (search_aux "") modules)) ;
   close_out output
+
+let docaml_clean () =
+  Printf.printf "Not implemented yet\n"
+
+let docaml_init () =
+  Printf.printf "Not implemented yet\n"
+
+let () =
+  let args =
+    Array.to_list Sys.argv
+    |> List.tl
+  in
+  match args with
+  | [] ->
+    if Sys.file_exists "docaml" then begin
+      try begin
+        let _ = Config.from_file "docaml" in
+        Printf.printf "Type the following to build the doc: docaml build\n"
+      end
+      with Config.Error s ->
+        Printf.printf "There are some errors in the `docaml` file:\n%s" s
+    end
+    else begin
+      Printf.printf "`docaml` file is missing.\nUse `docaml init` to create it step by step.\n"
+    end
+  | [ "build" ] -> docaml_build ()
+  | [ "clean" ] -> docaml_clean ()
+  | [ "init" ] -> docaml_init ()
+  | _ -> Printf.printf "Error. Type `docaml` for more information.\n"
